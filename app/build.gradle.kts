@@ -33,6 +33,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
     buildToolsVersion = "35.0.0"
 }
@@ -44,6 +45,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
     implementation(libs.lifecycle.extensions)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -53,6 +55,7 @@ dependencies {
 
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation(libs.firebase.analytics)
+    implementation(libs.google.firebase.firestore)
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
