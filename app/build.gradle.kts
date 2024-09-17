@@ -28,7 +28,7 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
@@ -55,7 +55,6 @@ dependencies {
 
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation(libs.firebase.analytics)
-    implementation(libs.google.firebase.firestore)
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries

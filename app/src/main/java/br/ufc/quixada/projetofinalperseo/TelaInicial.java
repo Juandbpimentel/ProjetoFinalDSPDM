@@ -7,18 +7,22 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link TelaInicial#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class TelaInicial extends Fragment {
 
 
-public class TelaLogin extends Fragment {
 
-    public TelaLogin() {
+    public TelaInicial() {
         // Required empty public constructor
     }
 
-    public static TelaLogin newInstance() {
-        TelaLogin fragment = new TelaLogin();
+    public static TelaInicial newInstance() {
+        TelaInicial fragment = new TelaInicial();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -32,16 +36,7 @@ public class TelaLogin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tela_login, container, false);
-
-        Button botaoLogin = view.findViewById(R.id.fazer_login_button);
-
-        botaoLogin.setOnClickListener(
-                v->{
-                    Toast.makeText(this.getContext(), "Clicou no botão de login", Toast.LENGTH_SHORT).show();
-                }
-        );
-
-        return view;
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_tela_inicial, container, false);
     }
 }

@@ -13,7 +13,7 @@ secretsGradlePlugin = "2.0.1"
 lifecycleExtensions = "2.2.0"
 
 [libraries]
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics", version = "22.1.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 google-firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -26,7 +26,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
-firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version = "25.1.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
