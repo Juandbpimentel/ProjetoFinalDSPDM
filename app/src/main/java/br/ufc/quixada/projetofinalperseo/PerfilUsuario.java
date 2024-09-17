@@ -56,11 +56,9 @@ public class PerfilUsuario extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_perfil_usuario, container, false);
-        UsuarioViewModel usuarioViewModel;
-        if (idUsuario != null && !idUsuario.isEmpty())
-            usuarioViewModel= new UsuarioViewModel(idUsuario);
-        else
-            usuarioViewModel = new UsuarioViewModel();
+        MainActivity mainActivity = (MainActivity) requireActivity();
+
+        UsuarioViewModel usuarioViewModel = mainActivity.usuarioViewModel;
         FragmentPerfilUsuarioBinding binding = FragmentPerfilUsuarioBinding.bind(view);
         binding.setUsuarioViewModel(usuarioViewModel);
         return view;

@@ -1,6 +1,7 @@
 package br.ufc.quixada.projetofinalperseo.utilities;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ public class AuthService {
                 usuario = fauth.getCurrentUser();
             }else {
                 usuario = null;
+                Log.d("AuthService", "Erro ao fazer login: "+task.getException());
                 Toast.makeText(context, "Erro ao fazer login: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });

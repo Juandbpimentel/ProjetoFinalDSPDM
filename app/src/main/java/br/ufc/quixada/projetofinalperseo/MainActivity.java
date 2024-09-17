@@ -18,8 +18,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 
+public class MainActivity extends AppCompatActivity {
+    public UsuarioViewModel usuarioViewModel;
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +51,8 @@ public class MainActivity extends AppCompatActivity {
         {
             Log.d("Permissão", "Permissão de localização aproximada");
         }
+        usuarioViewModel = new UsuarioViewModel();
 
-//        ViewPager2 viewPager = findViewById(R.id.main_frame_layout);
-//        AplicacaoViewPagerAdapter aplicacaoViewPagerAdapter = new AplicacaoViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
-//        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-//        viewPager.setUserInputEnabled(false);
-//        viewPager.setAdapter(aplicacaoViewPagerAdapter);
-//        PerfilUsuario.idUsuario = null;
-//        viewPager.setCurrentItem(2);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int position = item.getItemId();
@@ -70,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (position == R.id.perfil_navbar) {
                 String idUsuario = "3PSVpy77p3CqYr8NMSB2";
                 Fragment fragment = PerfilUsuario.newInstance(idUsuario);
+                Bundle args = new Bundle();
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
             }
             return true;

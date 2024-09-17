@@ -9,9 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.Objects;
+
+import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
+import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 
 
 public class TelaLogin extends Fragment {
@@ -38,19 +44,35 @@ public class TelaLogin extends Fragment {
 
         Button botaoLogin = view.findViewById(R.id.tela_login_button_fazer_login);
         Button botaoCriarConta = view.findViewById(R.id.tela_login_button_criar_conta);
-
+        EditText email = view.findViewById(R.id.tela_login_campo_email);
+        EditText senha = view.findViewById(R.id.tela_login_campo_senha);
         botaoLogin.setOnClickListener(
                 v->{
-                    Toast.makeText(this.getContext(), "Clicou no botão de login", Toast.LENGTH_SHORT).show();
-                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                    MainActivity mainActivity = (MainActivity) getActivity();
+                    if (email.getText() == null || senha.getText() == null) {
+                        Toast.makeText(this.getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String emailString = email.getText() == null ? "" : email.getText().toString();
+                    String senhaString = senha.getText() == null ? "" : senha.getText().toString();
+                    if (emailString.isEmpty() || senhaString.isEmpty()) {
+                        Toast.makeText(this.getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if(!AuthService.fazerLogin(emailString, senhaString, this.getContext()))
+                        return;
+                    assert mainActivity != null;
+                    mainActivity.usuarioViewModel.setUsuarioPorAuth();
+                    BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
                     bottomNavigationView.setVisibility(BottomNavigationView.VISIBLE);
                     bottomNavigationView.setSelectedItemId(R.id.home_navbar);
+
                 }
         );
 
         botaoCriarConta.setOnClickListener(
                 v->{
-                    Toast.makeText(this.getContext(), "Clicou no botão de criar conta", Toast.LENGTH_SHORT).show();
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, CriarConta.newInstance()).commit();
                 }
         );
