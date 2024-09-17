@@ -18,7 +18,7 @@ public class Atividade {
     }
 
     public Atividade(String nome , String descricao, Timestamp dataAgenda, Grupo grupo, Localizacao localizacao) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.dataAgenda = dataAgenda;
         this.descricao = descricao;
         this.nome = nome;
@@ -27,7 +27,7 @@ public class Atividade {
     }
 
     public Atividade(String id, String nome, String descricao, Timestamp dataAgenda, Grupo grupo, Localizacao localizacao) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.dataAgenda = dataAgenda;
         this.descricao = descricao;

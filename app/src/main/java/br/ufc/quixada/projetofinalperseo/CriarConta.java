@@ -2,11 +2,14 @@ package br.ufc.quixada.projetofinalperseo;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CriarConta extends Fragment {
 
@@ -29,6 +32,12 @@ public class CriarConta extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_criar_conta, container, false);
+        View view = inflater.inflate(R.layout.fragment_criar_conta, container, false);
+        getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            public void handleOnBackPressed() {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, TelaLogin.newInstance()).commit();
+            }
+        });
+        return view;
     }
 }

@@ -16,8 +16,7 @@ public class AplicacaoViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         return switch (position) {
             case 0 -> TelaInicial.newInstance();
-            case 1 -> TelaLogin.newInstance();
-            case 2 -> PerfilUsuario.newInstance();
+            case 2 -> PerfilUsuario.newInstance("3PSVpy77p3CqYr8NMSB2");
             case 3 -> CriarAtividade.newInstance();
             case 4 -> CriarConta.newInstance();
             case 5 -> CriarGrupo.newInstance();
