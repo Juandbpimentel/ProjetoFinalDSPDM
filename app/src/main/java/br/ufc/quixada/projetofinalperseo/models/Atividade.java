@@ -2,20 +2,50 @@ package br.ufc.quixada.projetofinalperseo.models;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Atividade {
     @DocumentId
     private String id;
-    private Timestamp dataAgenda;
-    private String descricao;
     private String nome;
-    private Localizacao localizacao;
-    private Grupo grupo;
+    private String descricao;
+    private Timestamp dataAgenda;
+    private DocumentReference grupo;
+    private DocumentReference localizacao;
 
     public Atividade() {
     }
 
-    public Atividade(String id, Timestamp dataAgenda, String descricao, String nome, Localizacao localizacao, Grupo grupo) {
+    public Atividade(String nome , String descricao, Timestamp dataAgenda, Grupo grupo, Localizacao localizacao) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        this.dataAgenda = dataAgenda;
+        this.descricao = descricao;
+        this.nome = nome;
+        this.localizacao = db.collection("localizacoes").document(localizacao.getId());
+        this.grupo = db.collection("grupos").document(grupo.getId());
+    }
+
+    public Atividade(String id, String nome, String descricao, Timestamp dataAgenda, Grupo grupo, Localizacao localizacao) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        this.id = id;
+        this.dataAgenda = dataAgenda;
+        this.descricao = descricao;
+        this.nome = nome;
+        this.localizacao = db.collection("localizacoes").document(localizacao.getId());
+        this.grupo = db.collection("grupos").document(grupo.getId());
+    }
+
+
+    public Atividade(String nome , String descricao, Timestamp dataAgenda, DocumentReference grupo, DocumentReference localizacao) {
+        this.dataAgenda = dataAgenda;
+        this.descricao = descricao;
+        this.nome = nome;
+        this.localizacao = localizacao;
+        this.grupo = grupo;
+    }
+
+    public Atividade(String id, String nome, String descricao, Timestamp dataAgenda, DocumentReference grupo, DocumentReference localizacao) {
         this.id = id;
         this.dataAgenda = dataAgenda;
         this.descricao = descricao;
@@ -25,13 +55,6 @@ public class Atividade {
     }
 
 
-    public Atividade(Timestamp dataAgenda, String descricao, String nome, Localizacao localizacao, Grupo grupo) {
-        this.dataAgenda = dataAgenda;
-        this.descricao = descricao;
-        this.nome = nome;
-        this.localizacao = localizacao;
-        this.grupo = grupo;
-    }
 
     public String getId() {
         return id;
@@ -65,19 +88,19 @@ public class Atividade {
         this.nome = nome;
     }
 
-    public Localizacao getLocalizacao() {
+    public DocumentReference getLocalizacao() {
         return localizacao;
     }
 
-    public void setLocalizacao(Localizacao localizacao) {
+    public void setLocalizacao(DocumentReference localizacao) {
         this.localizacao = localizacao;
     }
 
-    public Grupo getGrupo() {
+    public DocumentReference getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(Grupo grupo) {
+    public void setGrupo(DocumentReference grupo) {
         this.grupo = grupo;
     }
 }

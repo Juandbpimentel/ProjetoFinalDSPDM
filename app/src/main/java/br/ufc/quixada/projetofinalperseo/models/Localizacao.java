@@ -10,28 +10,23 @@ public class Localizacao {
     private String estado;
     private String pais;
     private GeoPoint geoPoint;
-    private String endereco;
-
-
 
     public Localizacao() {
     }
 
-    public Localizacao(String id, String cidade, String estado, String pais, GeoPoint geoPoint, String endereco) {
+    public Localizacao(String id, String cidade, String estado, String pais, GeoPoint geoPoint) {
         this.id = id;
         this.cidade = cidade;
         this.estado = estado;
         this.pais = pais;
         this.geoPoint = geoPoint;
-        this.endereco = endereco;
     }
 
-    public Localizacao(String cidade, String estado, String pais, GeoPoint geoPoint, String endereco) {
+    public Localizacao(String cidade, String estado, String pais, GeoPoint geoPoint) {
         this.cidade = cidade;
         this.estado = estado;
         this.pais = pais;
         this.geoPoint = geoPoint;
-        this.endereco = endereco;
     }
 
 
@@ -73,13 +68,5 @@ public class Localizacao {
 
     public void setGeoPoint(GeoPoint geoPoint) {
         this.geoPoint = geoPoint;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
     }
 }
