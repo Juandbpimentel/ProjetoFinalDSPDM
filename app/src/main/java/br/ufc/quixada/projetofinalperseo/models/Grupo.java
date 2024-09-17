@@ -19,7 +19,7 @@ public class Grupo {
     private String esporte;
 
     public Grupo(String nome, String descricao, Usuario criador, Localizacao localizacao, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.nome = nome;
         this.descricao = descricao;
         this.criador = db.collection("usuarios").document(criador.getId());
@@ -30,7 +30,7 @@ public class Grupo {
     }
 
     public Grupo(String id, String nome, String descricao, Usuario criador, Localizacao localizacao, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -42,7 +42,7 @@ public class Grupo {
     }
 
     public Grupo(String nome, String descricao, DocumentReference criador, DocumentReference localizacao, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.nome = nome;
         this.descricao = descricao;
         this.criador = criador;
@@ -53,7 +53,7 @@ public class Grupo {
     }
 
     public Grupo(String id, String nome, String descricao, DocumentReference criador, DocumentReference localizacao, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

@@ -2,11 +2,16 @@ package br.ufc.quixada.projetofinalperseo;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import br.ufc.quixada.projetofinalperseo.databinding.FragmentPerfilUsuarioBinding;
 import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
@@ -58,7 +63,8 @@ public class PerfilUsuario extends Fragment {
             usuarioViewModel = new UsuarioViewModel();
         FragmentPerfilUsuarioBinding binding = FragmentPerfilUsuarioBinding.bind(view);
         binding.setUsuarioViewModel(usuarioViewModel);
-        // Inflate the layout for this fragment
         return view;
     }
+
+
 }

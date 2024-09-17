@@ -14,90 +14,82 @@
         android:layout_height="match_parent">
 
         <EditText
-            android:id="@+id/login_campo_email"
+            android:id="@+id/tela_login_campo_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
+            android:layout_marginTop="250dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="75dp"
             android:ems="10"
             android:inputType="textEmailAddress"
-            app:layout_constraintBottom_toTopOf="@+id/login_campo_senha"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/login_campo_senha"
+            android:id="@+id/tela_login_campo_senha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
+            android:layout_marginTop="150dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="51dp"
             android:ems="10"
             android:inputType="textPassword"
-            app:layout_constraintBottom_toTopOf="@+id/fazer_login_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_campo_email" />
+            app:layout_constraintTop_toBottomOf="@+id/tela_login_campo_email" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tela_login_label_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
             android:textColor="#cc4725"
             android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/login_campo_email"
-            app:layout_constraintStart_toStartOf="@+id/login_campo_email" />
+            app:layout_constraintBottom_toTopOf="@+id/tela_login_campo_email"
+            app:layout_constraintStart_toStartOf="@+id/tela_login_campo_email" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tela_login_label_senha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Senha"
             android:textColor="#cc4725"
             android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/login_campo_senha"
-            app:layout_constraintStart_toStartOf="@+id/login_campo_senha" />
+            app:layout_constraintBottom_toTopOf="@+id/tela_login_campo_senha"
+            app:layout_constraintStart_toStartOf="@+id/tela_login_campo_senha" />
 
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="174dp"
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:src="@drawable/olympseek___capa_de_formul_rio__1__removebg_preview"
-            app:layout_constraintBottom_toTopOf="@+id/login_campo_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/fazer_login_button"
+            android:id="@+id/tela_login_button_fazer_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="11dp"
-            android:layout_marginBottom="144dp"
+            android:layout_marginTop="150dp"
             android:text="Fazer Login"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/login_botao_criar_conta"
+            app:layout_constraintEnd_toStartOf="@+id/tela_login_button_criar_conta"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_campo_senha" />
+            app:layout_constraintTop_toBottomOf="@+id/tela_login_campo_senha" />
 
         <Button
-            android:id="@+id/login_botao_criar_conta"
+            android:id="@+id/tela_login_button_criar_conta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:text="Criar Conta"
-            app:layout_constraintBaseline_toBaselineOf="@+id/fazer_login_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fazer_login_button" />
+            app:layout_constraintStart_toEndOf="@+id/tela_login_button_fazer_login"
+            app:layout_constraintTop_toTopOf="@+id/tela_login_button_fazer_login" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
