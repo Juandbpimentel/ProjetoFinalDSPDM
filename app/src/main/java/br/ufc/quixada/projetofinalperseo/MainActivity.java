@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        CriarConta fragment_criar_conta = CriarConta.newInstance();
-        CriarAtividade fragment_criar_atividade = CriarAtividade.newInstance();
+        PerfilUsuario fragment_perfil_usuario = PerfilUsuario.newInstance();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 //        ft.replace(R.id.mainFrameLayout,fragment_criar_conta);
-        ft.replace(R.id.mainFrameLayout,fragment_criar_atividade);
+        ft.replace(R.id.mainFrameLayout,fragment_perfil_usuario);
         ft.commit();
 
     }
