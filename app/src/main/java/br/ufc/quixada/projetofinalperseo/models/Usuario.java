@@ -10,13 +10,24 @@ import java.util.stream.Collectors;
 
 public class Usuario {
     private String id;
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", grupos=" + grupos +
+                '}';
+    }
+
     private String nome;
     private String email;
     private List<DocumentReference> grupos;
 
 
     public Usuario(String nome, String email, ArrayList<Grupo> grupos) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = UUID.randomUUID().toString();
         this.nome = nome;
         this.email = email;
@@ -24,7 +35,7 @@ public class Usuario {
     }
 
     public Usuario(String id, String nome, String email, ArrayList<Grupo> grupos) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.nome = nome;
         this.email = email;
