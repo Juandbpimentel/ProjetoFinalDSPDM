@@ -7,7 +7,9 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -21,28 +23,27 @@ public class UsuarioViewModel extends BaseObservable {
     private Usuario usuario;
 
     public UsuarioViewModel(String id) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         final DocumentReference docRef = db.collection("usuarios").document(id);
-        docRef.addSnapshotListener((value, error) -> {
-            if (error != null) {
-                Log.w("Projeto Mobile - Carregando View Model", "Listen failed.", error);
-                return;
-            }
-            String source = value != null && value.getMetadata().hasPendingWrites()
-                    ? "Local" : "Server";
-            if ( value == null || !value.exists()) {
-                Log.d("Projeto Mobile - Carregando View Model", source + " data: null");
-                return;
-            }
-            Usuario usuarioDTO = value.toObject(Usuario.class);
-            if (usuarioDTO == null) {
-                Log.d("Projeto Mobile - Carregando View Model", source + " data: null");
-                return;
-            }
-            setUsuario(usuario);
-            notifyPropertyChanged(BR.nome);
-            notifyPropertyChanged(BR.email);
-            Log.d("Projeto Mobile - Carregando View Model", source + " data: " + value.getData());
+        Task<DocumentSnapshot> task = docRef.get();
+        task.addOnSuccessListener((resultado) -> {
+                if (!resultado.exists()) {
+                    Log.d("Projeto Mobile - Carregando View Model", "Não existe usuario com id: " + id);
+                    return;
+                }
+                Usuario usuario = resultado.toObject(Usuario.class);
+                if (usuario == null) {
+                    Log.d("Projeto Mobile - Carregando View Model", "Usuario nulo");
+                    return;
+                }
+                setUsuario(usuario);
+                Log.d("Projeto Mobile - Carregando View Model", "Carregado usuario com id: " + id + " - " + usuario.toString());
+                notifyPropertyChanged(BR.nome);
+                notifyPropertyChanged(BR.email);
+
+        });
+        task.addOnFailureListener((e) -> {
+            Log.d("Projeto Mobile - Carregando View Model", "Erro ao carregar usuario com id: " + id + " - " + e.getLocalizedMessage());
         });
     }
 
@@ -63,6 +64,7 @@ public class UsuarioViewModel extends BaseObservable {
     //getters e setters
     @Bindable
     public String getNome(){
+        if (usuario == null) return "";
         return usuario.getNome();
     }
     public void setNome(String nome){
@@ -76,6 +78,7 @@ public class UsuarioViewModel extends BaseObservable {
 
     @Bindable
     public String getEmail(){
+        if (usuario == null) return "";
         return usuario.getEmail();
     }
     public void setEmail(String email, Context context){
@@ -134,7 +137,7 @@ public class UsuarioViewModel extends BaseObservable {
     }
 
     public void entrarEmGrupo(Grupo grupo){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
         DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
         usuario.getGrupos().add(grupoRef);
@@ -145,7 +148,7 @@ public class UsuarioViewModel extends BaseObservable {
     }
 
     public void sairDeGrupo(Grupo grupo){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
         DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
         usuario.getGrupos().removeIf(grupoRef::equals);
@@ -156,7 +159,7 @@ public class UsuarioViewModel extends BaseObservable {
     }
 
     public void setUsuarioPorAuth(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         db.collection("usuarios").whereEqualTo("email", AuthService.usuario.getEmail()).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 if(!task.getResult().getDocuments().isEmpty()){
