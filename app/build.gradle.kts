@@ -43,18 +43,18 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.play.services.maps)
     implementation(libs.lifecycle.extensions)
-    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
     // Import the Firebase BoM
-    implementation(platform(libs.firebase.bom))
-
     // When using the BoM, don't specify versions in Firebase dependencies
+    implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.google.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.maps)
 
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
