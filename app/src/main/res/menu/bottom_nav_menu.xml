@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_navbar"
+        android:title="@string/home_navbar_text"
+        android:icon="@drawable/home_imagem_navbar"/>
+    <item
+        android:id="@+id/grupos_navbar"
+        android:title="@string/grupos_navbar_text"
+        android:icon="@drawable/grupos_imagem_navbar"/>
+    <item
+        android:id="@+id/perfil_navbar"
+        android:title="@string/perfil_navbar_text"
+        android:icon="@drawable/perfil_imagem_navbar"/>
+</menu>
