@@ -10,19 +10,19 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EdiatarUsuario#newInstance} factory method to
+ * Use the {@link EditarUsuario#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EdiatarUsuario extends Fragment {
+public class EditarUsuario extends Fragment {
 
 
-    public EdiatarUsuario() {
+    public EditarUsuario() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static EdiatarUsuario newInstance() {
-        EdiatarUsuario fragment = new EdiatarUsuario();
+    public static EditarUsuario newInstance() {
+        EditarUsuario fragment = new EditarUsuario();
         Bundle args = new Bundle();
         return fragment;
     }
@@ -36,6 +36,6 @@ public class EdiatarUsuario extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ediatar_usuario, container, false);
+        return inflater.inflate(R.layout.fragment_editar_usuario, container, false);
     }
 }

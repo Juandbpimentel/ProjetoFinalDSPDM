@@ -164,6 +164,7 @@ public class UsuarioViewModel extends BaseObservable {
             if(task.isSuccessful()){
                 if(!task.getResult().getDocuments().isEmpty()){
                     setUsuario(task.getResult().getDocuments().get(0).toObject(Usuario.class));
+                    Log.d("Projeto Mobile - Carregando View Model", "Carregado usuario com id: " + usuario.getId() + " - " + usuario.toString());
                 }else{
                     setUsuario(new Usuario());
                 }

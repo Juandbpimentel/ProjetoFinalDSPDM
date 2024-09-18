@@ -17,8 +17,9 @@ public class Usuario {
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
-                ", grupos=" + grupos +
-                '}';
+                ", grupos= [" + grupos.stream().map(DocumentReference::getId).collect(Collectors.joining(", "))
+                +
+                "]}";
     }
 
     private String nome;

@@ -17,10 +17,11 @@
                 android:id="@+id/perfil_usuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="20dp"
                 android:text="Perfil de usuário"
                 android:textColor="#cc4725"
                 android:textSize="30dp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,7 +56,7 @@
                 android:layout_width="138dp"
                 android:layout_height="68dp"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="600dp"
+                android:layout_marginTop="500dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="20dp"
                 android:text="Editar Perfil"
@@ -67,7 +68,7 @@
 
             <TextView
                 android:id="@+id/perfil_nome_usuario"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="24dp"
@@ -80,7 +81,7 @@
 
             <TextView
                 android:id="@+id/perfil_email_usuario"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="24dp"
@@ -90,13 +91,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/perfil_label_email_usuario" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/perfil_usuario_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toTopOf="@+id/perfil_editar_dados"
                 app:layout_constraintEnd_toEndOf="parent"
