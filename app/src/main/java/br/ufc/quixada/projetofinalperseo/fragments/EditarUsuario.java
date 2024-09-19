@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 import br.ufc.quixada.projetofinalperseo.MainActivity;
 import br.ufc.quixada.projetofinalperseo.R;
 import br.ufc.quixada.projetofinalperseo.databinding.FragmentEditarUsuarioBinding;
@@ -69,11 +71,14 @@ public class EditarUsuario extends Fragment {
         Usuario usuario = usuarioViewModel.getUsuario();
 
         EditText senha = view.findViewById(R.id.editar_usuario_campo_senha);
+        EditText nome = view.findViewById(R.id.editar_usuario_campo_nome);
 
         Button btnSalvar = view.findViewById(R.id.editar_usuario_botao_salvar);
         btnSalvar.setOnClickListener((v) -> {
             Log.d("EditarUsuario", "Email: " + usuarioViewModel.getUsuario().getEmail());
             String senhaString = senha.getText().toString();
+            String nomeString = nome.getText().toString();
+            usuarioViewModel.setNome(nomeString);
             usuarioViewModel.atualizarUsuario(idUsuario, senhaString, mainActivity);
             Fragment fragment = PerfilUsuario.newInstance(idUsuario);
             mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
