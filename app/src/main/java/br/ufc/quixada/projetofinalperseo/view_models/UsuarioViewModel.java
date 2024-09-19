@@ -3,6 +3,7 @@ package br.ufc.quixada.projetofinalperseo.view_models;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
@@ -72,10 +74,6 @@ public class UsuarioViewModel extends BaseObservable {
         notifyPropertyChanged(BR.nome);
     }
 
-    public void setSenha(String senha, Context context){
-        atualizarSenha(senha,context);
-    }
-
     @Bindable
     public String getEmail(){
         if (usuario == null) return "";
@@ -83,7 +81,6 @@ public class UsuarioViewModel extends BaseObservable {
     }
     public void setEmail(String email, Context context){
         usuario.setEmail(email);
-        atualizarEmail(email, context);
         notifyPropertyChanged(BR.email);
     }
 
@@ -103,10 +100,11 @@ public class UsuarioViewModel extends BaseObservable {
         notifyPropertyChanged(BR.email);
     }
 
-    //Metodos Firebase
-    public void criarUsuario(String nome , String email, String senha){
+    //Metodos Firebase Firestore e Auth
+    public void criarUsuario(String nome, String email, String senha, Context context){
         try{
             Usuario novoUsuario = new Usuario(nome, email, senha, List.of());
+            AuthService.criarUsuario(email, senha, context);
             FirebaseFirestore.getInstance().collection("usuarios").document(novoUsuario.getId()).set(novoUsuario);
             setUsuario(novoUsuario);
         }catch (Exception e){
@@ -116,19 +114,50 @@ public class UsuarioViewModel extends BaseObservable {
         }
     }
 
-    public void atualizarNome(String nome){
-        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("nome", nome);
-        usuario.setNome(nome);
+    public void atualizarUsuario( Usuario usuarioAntigo, Context context){
+        if (usuarioAntigo == null) return;
+
+        atualizarNome(usuario.getNome(), usuarioAntigo.getId());
+        atualizarEmail(usuario.getEmail(), usuarioAntigo.getId(),context);
+        atualizarId(usuario.getId(), usuarioAntigo.getId());
     }
 
-    public void atualizarEmail(String email, Context context){
+    public void atualizarNome(String nome, String id){
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(id);
+        Usuario usuarioAntigo = usuarioRef.get().getResult().toObject(Usuario.class);
+        if(usuarioAntigo != null && nome.equals(usuarioAntigo.getNome()))
+            return;
+        usuarioRef.update("nome", nome);
+        usuario.setEmail(nome);
+    }
+
+    public void atualizarEmail(String email, String id, Context context){
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(id);
+        Usuario usuarioAntigo = usuarioRef.get().getResult().toObject(Usuario.class);
+        if(usuarioAntigo != null && email.equals(usuarioAntigo.getEmail()))
+            return;
+
         AuthService.alterarEmail(email, context);
-        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("email", email);
+        usuarioRef.update("email", email);
         usuario.setEmail(email);
     }
 
-    public void atualizarId(String id){
-        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("id", id);
+    public void atualizarId(String id, String idAntigo){
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(idAntigo);
+        if (id.equals(idAntigo))
+            return;
+        usuario.setId(id);
+        FirebaseFirestore.getInstance().collection("usuarios").document(id).set(usuario);
+        FirebaseFirestore.getInstance().collection("usuarios").document(idAntigo).delete();
+        for (Grupo grupo : getGrupos()) {
+            grupo.getParticipantes().removeIf(usuarioRef::equals);
+            grupo.getParticipantes().add(FirebaseFirestore.getInstance().collection("usuarios").document(id));
+            FirebaseFirestore.getInstance().collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
+            if (grupo.getAdministrador().equals(usuarioRef)){
+                grupo.setAdministrador(FirebaseFirestore.getInstance().collection("usuarios").document(id));
+                FirebaseFirestore.getInstance().collection("grupos").document(grupo.getId()).update("administrador", grupo.getAdministrador());
+            }
+        }
         usuario.setId(id);
     }
 
@@ -136,7 +165,7 @@ public class UsuarioViewModel extends BaseObservable {
         AuthService.alterarSenha(senha, context);
     }
 
-    public void entrarEmGrupo(Grupo grupo){
+    public void entrarEmGrupo(@NonNull Grupo grupo){
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
         DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
@@ -147,7 +176,7 @@ public class UsuarioViewModel extends BaseObservable {
         db.collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
     }
 
-    public void sairDeGrupo(Grupo grupo){
+    public void sairDeGrupo(@NonNull Grupo grupo){
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
         DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
@@ -164,6 +193,7 @@ public class UsuarioViewModel extends BaseObservable {
             if(task.isSuccessful()){
                 if(!task.getResult().getDocuments().isEmpty()){
                     setUsuario(task.getResult().getDocuments().get(0).toObject(Usuario.class));
+                    Log.d("Projeto Mobile - Carregando View Model", "Carregado usuario com id: " + usuario.getId() + " - " + usuario.toString());
                 }else{
                     setUsuario(new Usuario());
                 }

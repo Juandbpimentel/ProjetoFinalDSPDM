@@ -10,6 +10,9 @@ import java.util.stream.Collectors;
 
 public class Usuario {
     private String id;
+    private String nome;
+    private String email;
+    private List<DocumentReference> grupos;
 
     @Override
     public String toString() {
@@ -17,13 +20,11 @@ public class Usuario {
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
-                ", grupos=" + grupos +
-                '}';
+                ", grupos= [" + grupos.stream().map(DocumentReference::getId).collect(Collectors.joining(", "))
+                +
+                "]}";
     }
 
-    private String nome;
-    private String email;
-    private List<DocumentReference> grupos;
 
 
     public Usuario(String nome, String email, ArrayList<Grupo> grupos) {
