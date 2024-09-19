@@ -143,15 +143,51 @@
 
         <Button
             android:id="@+id/ver_grupo_ver_atividades_botao"
-            android:layout_width="235dp"
-            android:layout_height="62dp"
+            android:layout_width="124dp"
+            android:layout_height="77dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginTop="152dp"
             android:text="Ver Atividades"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ver_grupo_cadastrar_atividade"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ver_grupo_esporte" />
+
+        <Button
+            android:id="@+id/ver_grupo_cadastrar_atividade"
+            android:layout_width="122dp"
+            android:layout_height="73dp"
+            android:layout_marginTop="156dp"
+            android:layout_marginEnd="50dp"
+            android:text="Cadastrar Atividade"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ver_grupo_ver_atividades_botao"
+            app:layout_constraintTop_toBottomOf="@+id/ver_grupo_esporte" />
+
+        <Button
+            android:id="@+id/ver_grupo_editar_grupo"
+            android:layout_width="120dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="108dp"
+            android:layout_marginEnd="50dp"
+            android:text="Editar Grupo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ver_grupos_excluir_grupo"
+            app:layout_constraintTop_toBottomOf="@+id/ver_grupo_cadastrar_atividade" />
+
+        <Button
+            android:id="@+id/ver_grupos_excluir_grupo"
+            android:layout_width="112dp"
+            android:layout_height="78dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="104dp"
+            android:text="Excluir Grupo"
+            app:layout_constraintEnd_toStartOf="@+id/ver_grupo_editar_grupo"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ver_grupo_ver_atividades_botao" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

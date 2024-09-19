@@ -94,4 +94,5 @@
     <string name="grupos_navbar_text">Grupos</string>
     <string name="home_navbar_text">Home</string>
     <string name="perfil_navbar_text">Perfil</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

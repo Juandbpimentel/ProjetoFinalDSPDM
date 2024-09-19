@@ -36,6 +36,7 @@ android {
             enable = true
         }
         buildConfig = true
+        viewBinding = true
     }
     buildToolsVersion = "35.0.0"
 }

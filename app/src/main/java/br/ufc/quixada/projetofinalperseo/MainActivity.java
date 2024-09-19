@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (position == R.id.perfil_navbar) {
                 String idUsuario = "3PSVpy77p3CqYr8NMSB2";
                 Fragment fragment = PerfilUsuario.newInstance(idUsuario);
+                                      
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
             }
             return true;
