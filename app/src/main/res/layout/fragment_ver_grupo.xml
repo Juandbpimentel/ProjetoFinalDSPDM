@@ -9,7 +9,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/ver_grupo_nome"
@@ -151,77 +151,63 @@
 
             <Button
                 android:id="@+id/ver_grupo_button_ver_localizacao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="300dp"
+                android:layout_width="144dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="404dp"
                 android:layout_marginEnd="50dp"
                 android:text="Ver Localização"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ver_grupo_label_atividades" />
 
             <Button
                 android:id="@+id/ver_grupo_botao_participacao_grupo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_width="173dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="50dp"
                 android:text="Participar do Grupo"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_button_ver_localizacao" />
-
-            <Button
-                android:id="@+id/ver_grupo_ver_atividades_botao"
-                android:layout_width="124dp"
-                android:layout_height="77dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="152dp"
-                android:text="Ver Atividades"
-                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_cadastrar_atividade"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_esporte" />
-
-            <Button
-                android:id="@+id/ver_grupo_cadastrar_atividade"
-                android:layout_width="122dp"
-                android:layout_height="73dp"
-                android:layout_marginTop="156dp"
-                android:layout_marginEnd="50dp"
-                android:text="Cadastrar Atividade"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ver_grupo_ver_atividades_botao"
-                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_esporte" />
-
-            <Button
-                android:id="@+id/ver_grupo_editar_grupo"
-                android:layout_width="120dp"
-                android:layout_height="75dp"
-                android:layout_marginTop="108dp"
-                android:layout_marginEnd="50dp"
-                android:text="Editar Grupo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/ver_grupos_excluir_grupo"
                 app:layout_constraintTop_toBottomOf="@+id/ver_grupo_cadastrar_atividade" />
 
             <Button
-                android:id="@+id/ver_grupos_excluir_grupo"
-                android:layout_width="112dp"
-                android:layout_height="78dp"
+                android:id="@+id/ver_grupo_cadastrar_atividade"
+                android:layout_width="214dp"
+                android:layout_height="56dp"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="104dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="50dp"
+                android:text="Cadastrar Atividade"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_editar_grupo" />
+
+            <Button
+                android:id="@+id/ver_grupo_editar_grupo"
+                android:layout_width="141dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="50dp"
+                android:text="Editar Grupo"
+                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_button_ver_localizacao"
+                app:layout_constraintHorizontal_bias="0.372"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ver_grupo_button_ver_localizacao" />
+
+            <Button
+                android:id="@+id/ver_grupos_excluir_grupo"
+                android:layout_width="143dp"
+                android:layout_height="44dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="24dp"
                 android:text="Excluir Grupo"
-                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_editar_grupo"
+                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_botao_participacao_grupo"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_ver_atividades_botao" />
+                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_cadastrar_atividade" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
