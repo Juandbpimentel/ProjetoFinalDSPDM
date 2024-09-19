@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (position == R.id.perfil_navbar) {
                 String idUsuario = "3PSVpy77p3CqYr8NMSB2";
                 Fragment fragment = PerfilUsuario.newInstance(idUsuario);
-                Bundle args = new Bundle();
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
             }
             return true;

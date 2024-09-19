@@ -9,12 +9,13 @@
     <ScrollView
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/perfil_usuario"
+                android:id="@+id/perfil_usuario_titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -27,7 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/perfil_label_nome_usuario"
+                android:id="@+id/perfil_usuario_label_nome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -36,10 +37,10 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario" />
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_titulo" />
 
             <TextView
-                android:id="@+id/perfil_label_email_usuario"
+                android:id="@+id/perfil_usuario_label_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="92dp"
@@ -49,25 +50,24 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_label_nome_usuario" />
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_nome" />
 
             <Button
-                android:id="@+id/perfil_editar_dados"
-                android:layout_width="138dp"
-                android:layout_height="68dp"
-                android:layout_marginStart="50dp"
+                android:id="@+id/perfil_usuario_botao_editar_dados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="500dp"
-                android:layout_marginEnd="50dp"
                 android:layout_marginBottom="20dp"
                 android:text="Editar Perfil"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_label_email_usuario" />
+                app:layout_constraintStart_toEndOf="@+id/perfil_usuario_botao_fazer_logout"
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_email"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/perfil_nome_usuario"
+                android:id="@+id/perfil_usuario_nome"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
@@ -77,7 +77,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_label_nome_usuario" />
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_nome" />
 
             <TextView
                 android:id="@+id/perfil_email_usuario"
@@ -89,25 +89,25 @@
                 android:text="@{usuarioViewModel.email}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_label_email_usuario" />
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_email" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/perfil_usuario_recycler_view"
+                android:id="@+id/perfil_usuario_recycler_view_grupos"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="50dp"
-                app:layout_constraintBottom_toTopOf="@+id/perfil_editar_dados"
+                app:layout_constraintBottom_toTopOf="@+id/perfil_usuario_botao_editar_dados"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20"
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_grupos"
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/perfil_usuario_label_grupos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="92dp"
@@ -117,7 +117,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/perfil_label_email_usuario" />
+                app:layout_constraintTop_toBottomOf="@+id/perfil_usuario_label_email" />
+
+            <Button
+                android:id="@+id/perfil_usuario_botao_fazer_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fazer Logout"
+                app:layout_constraintEnd_toStartOf="@+id/perfil_usuario_botao_editar_dados"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/perfil_usuario_botao_editar_dados" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

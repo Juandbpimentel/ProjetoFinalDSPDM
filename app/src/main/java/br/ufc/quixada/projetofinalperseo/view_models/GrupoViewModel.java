@@ -13,46 +13,46 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import br.ufc.quixada.projetofinalperseo.models.Atividade;
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
 import br.ufc.quixada.projetofinalperseo.models.Usuario;
-import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
 
 public class GrupoViewModel extends BaseObservable {
     private Grupo grupo;
 
-//    public GrupoViewModel(String id) {
-//        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-//        final DocumentReference docRef = db.collection("usuarios").document(id);
-//        Task<DocumentSnapshot> task = docRef.get();
-//        task.addOnSuccessListener((resultado) -> {
-//            if (!resultado.exists()) {
-//                Log.d("Projeto Mobile - Carregando View Model", "Não existe usuario com id: " + id);
-//                return;
-//            }
-//            Usuario usuario = resultado.toObject(Usuario.class);
-//            if (usuario == null) {
-//                Log.d("Projeto Mobile - Carregando View Model", "Usuario nulo");
-//                return;
-//            }
-//            setUsuario(usuario);
-//            Log.d("Projeto Mobile - Carregando View Model", "Carregado usuario com id: " + id + " - " + usuario.toString());
-//            notifyPropertyChanged(BR.nome);
-//            notifyPropertyChanged(BR.email);
-//
-//        });
-//        task.addOnFailureListener((e) -> {
-//            Log.d("Projeto Mobile - Carregando View Model", "Erro ao carregar usuario com id: " + id + " - " + e.getLocalizedMessage());
-//        });
-//    }
+    public GrupoViewModel(String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
+        final DocumentReference docRef = db.collection("grupos").document(id);
+        Task<DocumentSnapshot> task = docRef.get();
+        task.addOnSuccessListener((resultado) -> {
+            if (!resultado.exists()) {
+                Log.d("Projeto Mobile - Carregando Grupo View Model", "Não existe grupo com id: " + id);
+                return;
+            }
+            Grupo grupo = resultado.toObject(Grupo.class);
+            if (grupo == null) {
+                Log.d("Projeto Mobile - Carregando Grupo View Model", "Grupo nulo");
+                return;
+            }
+            setGrupo(grupo);
+            Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
+            notifyPropertyChanged(BR.nome);
+            notifyPropertyChanged(BR.email);
+
+        });
+        task.addOnFailureListener((e) -> {
+            Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
+        });
+    }
 
     public GrupoViewModel() { this.grupo = new Grupo(); }
 
     public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
 
-    public List<Atividade> getGrupos(){
+    public List<Atividade> getAtividades(){
         return grupo.getAtividades().stream().map(DocumentReference::get).collect(Collectors.toList()).stream().map(documentSnapshot -> documentSnapshot.getResult().toObject(Atividade.class)).collect(Collectors.toList());
     }
 
@@ -66,115 +66,109 @@ public class GrupoViewModel extends BaseObservable {
         return grupo.getParticipantes().stream().map(DocumentReference::get).collect(Collectors.toList()).stream().map(documentSnapshot -> documentSnapshot.getResult().toObject(Usuario.class)).collect(Collectors.toList());
     }
 
-//    //getters e setters
-//    @Bindable
-//    public String getNome(){
-//        if (usuario == null) return "";
-//        return usuario.getNome();
-//    }
-//    public void setNome(String nome){
-//        usuario.setNome(nome);
-//        notifyPropertyChanged(BR.nome);
-//    }
-//
-//    public void setSenha(String senha, Context context){
-//        atualizarSenha(senha,context);
-//    }
-//
-//    @Bindable
-//    public String getEmail(){
-//        if (usuario == null) return "";
-//        return usuario.getEmail();
-//    }
-//    public void setEmail(String email, Context context){
-//        usuario.setEmail(email);
-//        atualizarEmail(email, context);
-//        notifyPropertyChanged(BR.email);
-//    }
-//
-//    public String getId(){
-//        return usuario.getId();
-//    }
-//    public void setId(String id){
-//        usuario.setId(id);
-//    }
-//
-//    public Usuario getUsuario(){
-//        return usuario;
-//    }
-//    public void setUsuario(Usuario usuario){
-//        this.usuario = usuario;
-//        notifyPropertyChanged(BR.nome);
-//        notifyPropertyChanged(BR.email);
-//    }
-//
-//    //Metodos Firebase
-//    public void criarUsuario(String nome , String email, String senha){
-//        try{
-//            Usuario novoUsuario = new Usuario(nome, email, senha, List.of());
-//            FirebaseFirestore.getInstance().collection("usuarios").document(novoUsuario.getId()).set(novoUsuario);
-//            setUsuario(novoUsuario);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            setUsuario(new Usuario());
-//            return;
-//        }
-//    }
-//
-//    public void atualizarNome(String nome){
-//        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("nome", nome);
-//        usuario.setNome(nome);
-//    }
-//
-//    public void atualizarEmail(String email, Context context){
-//        AuthService.alterarEmail(email, context);
-//        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("email", email);
-//        usuario.setEmail(email);
-//    }
-//
-//    public void atualizarId(String id){
-//        FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("id", id);
-//        usuario.setId(id);
-//    }
-//
-//    public void atualizarSenha(String senha, Context context){
-//        AuthService.alterarSenha(senha, context);
-//    }
-//
-//    public void entrarEmGrupo(Grupo grupo){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-//        DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
-//        DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
-//        usuario.getGrupos().add(grupoRef);
-//        grupo.getParticipantes().add(usuarioRef);
-//
-//        db.collection("usuarios").document(usuario.getId()).update("grupos", usuario.getGrupos());
-//        db.collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
-//    }
-//
-//    public void sairDeGrupo(Grupo grupo){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-//        DocumentReference grupoRef = db.collection("grupos").document(grupo.getId());
-//        DocumentReference usuarioRef = db.collection("usuarios").document(usuario.getId());
-//        usuario.getGrupos().removeIf(grupoRef::equals);
-//        grupo.getParticipantes().removeIf(usuarioRef::equals);
-//
-//        db.collection("usuarios").document(usuario.getId()).update("grupos", usuario.getGrupos());
-//        db.collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
-//    }
-//
-//    public void setUsuarioPorAuth(){
-//        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-//        db.collection("usuarios").whereEqualTo("email", AuthService.usuario.getEmail()).get().addOnCompleteListener(task -> {
-//            if(task.isSuccessful()){
-//                if(!task.getResult().getDocuments().isEmpty()){
-//                    setUsuario(task.getResult().getDocuments().get(0).toObject(Usuario.class));
-//                }else{
-//                    setUsuario(new Usuario());
-//                }
-//            }else{
-//                setUsuario(new Usuario());
-//            }
-//        });
-//    }
+    //getters e setters
+    @Bindable
+    public String getNome(){
+        if (grupo == null) return "Grupo não encontrado";
+        return grupo.getNome();
+    }
+
+    public void setNome(String nome){
+        grupo.setNome(nome);
+        notifyPropertyChanged(BR.nome);
+    }
+
+    @Bindable
+    public String getDescricao(){
+        if (grupo == null) return "Grupo não encontrado";
+        return grupo.getDescricao();
+    }
+    public void setDescricao(String descricao, Context context){
+        grupo.setDescricao(descricao);
+        notifyPropertyChanged(BR.email);
+    }
+
+    public String getId(){
+        return grupo.getId();
+    }
+
+    public void setId(String id){
+        grupo.setId(id);
+    }
+
+    @Bindable
+    public String getEsporte(){
+        if (grupo == null) return "Grupo não encontrado";
+        return grupo.getEsporte();
+    }
+
+    public void setEsporte(String esporte){
+        grupo.setEsporte(esporte);
+        notifyPropertyChanged(BR.esporte);
+    }
+
+    public void setGrupo(Grupo grupo){
+        this.grupo = grupo;
+        notifyPropertyChanged(BR.nome);
+        notifyPropertyChanged(BR.esporte);
+        notifyPropertyChanged(BR.descricao);
+        notifyPropertyChanged(BR.nomeCriador);
+    }
+
+    public Grupo getGrupo(){
+        return grupo;
+    }
+
+    @Bindable String getNomeCriador(){
+        if (grupo == null) return "Grupo não encontrado";
+        return Objects.requireNonNull(grupo.getAdministrador().get().getResult().toObject(Usuario.class)).getNome();
+    }
+
+    //Metodos Firebase
+    public void atualizarNome(String nome, String id){
+        if (nome == null || nome.equals(grupo.getNome())) return;
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("nome", nome);
+        grupo.setNome(nome);
+    }
+
+    public void atualizarEsporte(String esporte, String id){
+        if (esporte == null || esporte.equals(grupo.getEsporte())) return;
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("esporte", esporte);
+        grupo.setEsporte(esporte);
+    }
+
+    public void atualizarDescricao(String descricao, String id){
+        if (descricao == null || descricao.equals(grupo.getDescricao())) return;
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("descricao", descricao);
+        grupo.setDescricao(descricao);
+    }
+
+    public void atualizarId(String id, String idAntigo){
+        DocumentReference grupoRef = FirebaseFirestore.getInstance().collection("grupos").document(idAntigo);
+        if (idAntigo.equals(id))
+            return;
+        grupo.setId(id);
+        FirebaseFirestore.getInstance().collection("grupos").document(id).set(grupo);
+        FirebaseFirestore.getInstance().collection("grupos").document(idAntigo).delete();
+
+        for (Usuario usuario : getParticipantes()) {
+            usuario.getGrupos().removeIf(grupoRef::equals);
+            usuario.getGrupos().add(FirebaseFirestore.getInstance().collection("grupos").document(id));
+            FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("grupos", usuario.getGrupos());
+        }
+        for (Atividade atividade : getAtividades()) {
+            atividade.setGrupo(FirebaseFirestore.getInstance().collection("grupos").document(id));
+            FirebaseFirestore.getInstance().collection("atividades").document(atividade.getId()).update("grupo", atividade.getGrupo());
+        }
+    }
+
+    public void atualizarGrupo(Grupo grupoAntigo,Context context){
+        if (grupoAntigo == null) return;
+        if (grupo.getId().equals(grupoAntigo.getId())) return;
+
+        atualizarDescricao(grupo.getDescricao(), grupoAntigo.getId());
+        atualizarNome(grupo.getNome(), grupoAntigo.getId());
+        atualizarEsporte(grupo.getEsporte(), grupoAntigo.getId());
+        atualizarId(grupo.getId(), grupoAntigo.getId());
+    }
 }
