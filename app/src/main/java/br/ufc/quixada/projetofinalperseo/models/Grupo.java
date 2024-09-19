@@ -8,8 +8,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Grupo {
-    @DocumentId
     private String id;
+    private String nome;
+    private String descricao;
+    private DocumentReference administrador;
+    private DocumentReference localizacao;
+    private List<DocumentReference> participantes;
+    private List<DocumentReference> atividades;
+    private String esporte;
 
     @Override
     public String toString() {
@@ -24,14 +30,6 @@ public class Grupo {
                 ", esporte='" + esporte + '\'' +
                 '}';
     }
-
-    private String nome;
-    private String descricao;
-    private DocumentReference administrador;
-    private DocumentReference localizacao;
-    private List<DocumentReference> participantes;
-    private List<DocumentReference> atividades;
-    private String esporte;
 
     public Grupo(String nome, String descricao, Usuario administrador, Localizacao localizacao, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");

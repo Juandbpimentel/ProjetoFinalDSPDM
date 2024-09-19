@@ -112,14 +112,15 @@ public class GrupoViewModel extends BaseObservable {
         notifyPropertyChanged(BR.nome);
         notifyPropertyChanged(BR.esporte);
         notifyPropertyChanged(BR.descricao);
-        notifyPropertyChanged(BR.nomeCriador);
+        notifyPropertyChanged(BR.administrador);
     }
 
     public Grupo getGrupo(){
         return grupo;
     }
 
-    @Bindable String getNomeCriador(){
+    @Bindable
+    public String getAdministrador(){
         if (grupo == null) return "Grupo não encontrado";
         return Objects.requireNonNull(grupo.getAdministrador().get().getResult().toObject(Usuario.class)).getNome();
     }

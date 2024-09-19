@@ -1,4 +1,4 @@
-package br.ufc.quixada.projetofinalperseo.view_models;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
@@ -12,19 +12,19 @@ import br.ufc.quixada.projetofinalperseo.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditarGrupo#newInstance} factory method to
+ * Use the {@link TelaInicial#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditarGrupo extends Fragment {
+public class TelaInicial extends Fragment {
 
-    public EditarGrupo() {
+
+
+    public TelaInicial() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public static EditarGrupo newInstance() {
-        EditarGrupo fragment = new EditarGrupo();
+    public static TelaInicial newInstance() {
+        TelaInicial fragment = new TelaInicial();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -39,6 +39,6 @@ public class EditarGrupo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_editar_grupo, container, false);
+        return inflater.inflate(R.layout.fragment_tela_inicial, container, false);
     }
 }

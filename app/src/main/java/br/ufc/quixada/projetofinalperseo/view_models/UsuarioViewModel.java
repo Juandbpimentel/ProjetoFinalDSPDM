@@ -1,5 +1,7 @@
 package br.ufc.quixada.projetofinalperseo.view_models;
 
+import static com.google.android.gms.tasks.Tasks.await;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -14,7 +16,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
@@ -79,8 +81,9 @@ public class UsuarioViewModel extends BaseObservable {
         if (usuario == null) return "";
         return usuario.getEmail();
     }
-    public void setEmail(String email, Context context){
+    public void setEmail(String email){
         usuario.setEmail(email);
+        Log.d("Projeto Mobile - UsuarioViewModel - Atualizando Email", "Email: " + email);
         notifyPropertyChanged(BR.email);
     }
 
@@ -101,11 +104,10 @@ public class UsuarioViewModel extends BaseObservable {
     }
 
     //Metodos Firebase Firestore e Auth
-    public void criarUsuario(String nome, String email, String senha, Context context){
+    public void criarUsuario(Usuario novoUsuario, String senha, Context context){
         try{
-            Usuario novoUsuario = new Usuario(nome, email, senha, List.of());
-            AuthService.criarUsuario(email, senha, context);
-            FirebaseFirestore.getInstance().collection("usuarios").document(novoUsuario.getId()).set(novoUsuario);
+            AuthService.criarUsuario(novoUsuario.getEmail(), senha , context);
+            FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(novoUsuario.getId()).set(novoUsuario);
             setUsuario(novoUsuario);
         }catch (Exception e){
             e.printStackTrace();
@@ -114,54 +116,93 @@ public class UsuarioViewModel extends BaseObservable {
         }
     }
 
-    public void atualizarUsuario( Usuario usuarioAntigo, Context context){
-        if (usuarioAntigo == null) return;
-
-        atualizarNome(usuario.getNome(), usuarioAntigo.getId());
-        atualizarEmail(usuario.getEmail(), usuarioAntigo.getId(),context);
-        atualizarId(usuario.getId(), usuarioAntigo.getId());
+    public void atualizarUsuario( String idUsuarioAntigo, String senha, Context context){
+        if (idUsuarioAntigo == null) return;
+        Log.d("Projeto Atualizando Usuario", "Usuario novo: " + usuario.toString());
+        if (senha != null)
+            Log.d("Projeto Atualizando Usuario", "Senha: " + senha);
+        String email = usuario.getEmail();
+        String nome = usuario.getNome();
+        Log.d("Projeto Atualizando Usuario", "Email: " + email);
+        atualizarNome(nome, idUsuarioAntigo);
+        atualizarEmail(email, idUsuarioAntigo, context);
+        atualizarSenha(senha, context);
+        atualizarId(usuario.getId(), idUsuarioAntigo);
     }
 
     public void atualizarNome(String nome, String id){
-        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(id);
-        Usuario usuarioAntigo = usuarioRef.get().getResult().toObject(Usuario.class);
-        if(usuarioAntigo != null && nome.equals(usuarioAntigo.getNome()))
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id);
+        AtomicReference<Usuario> usuarioAntigo = new AtomicReference<>();
+        usuarioRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                usuarioAntigo.set(task.getResult().toObject(Usuario.class));
+            }
+        });
+        if(usuarioAntigo.get() != null && nome.equals(usuarioAntigo.get().getNome()))
             return;
         usuarioRef.update("nome", nome);
-        usuario.setEmail(nome);
+        usuario.setNome(nome);
     }
 
     public void atualizarEmail(String email, String id, Context context){
-        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(id);
-        Usuario usuarioAntigo = usuarioRef.get().getResult().toObject(Usuario.class);
-        if(usuarioAntigo != null && email.equals(usuarioAntigo.getEmail()))
-            return;
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id);
+        Log.d("Projeto Atualizando Email", "Email: " + email + " | Id: " + id);
 
-        AuthService.alterarEmail(email, context);
-        usuarioRef.update("email", email);
-        usuario.setEmail(email);
+        usuarioRef.get().addOnSuccessListener(
+            documentSnapshot -> {
+                Usuario usuarioAntigo = documentSnapshot.toObject(Usuario.class);
+                if(usuarioAntigo == null) {
+                    Log.d("Atualizando Email", "Usuario antigo nulo");
+                    return;
+                }
+                if (email == null || usuarioAntigo.getEmail() == null) {
+                    Log.d("Atualizando Email", email == null ? "Email nulo" : "Email antigo nulo");
+                    if (usuarioAntigo.getEmail() != null)
+                        setEmail(usuarioAntigo.getEmail());
+                    return;
+                }
+                if (email.equals(usuarioAntigo.getEmail())) {
+                    Log.d("Atualizando Email", "Email igual ao antigo: "+ email);
+                    return;
+                }
+                Log.d("Projeto Atualizando Email", "Email antigo: " + usuarioAntigo.getEmail() + " | Email novo: " + email);
+                boolean deuCerto = AuthService.alterarEmail(email, context);
+                if (deuCerto) {
+                    Log.d("Projeto Atualizando Email", "Email alterado com sucesso");
+                    usuarioRef.update("email", email);
+                    usuario.setEmail(email);
+                    return;
+                }
+                Log.d("Projeto Atualizando Email", "Email não alterado");
+                usuario.setEmail(usuarioAntigo.getEmail());
+            }
+        ).addOnFailureListener(e -> {
+            Log.d("Atualizando Email", "Erro ao buscar usuario antigo: " + e.getLocalizedMessage());
+        });
+
     }
 
     public void atualizarId(String id, String idAntigo){
-        DocumentReference usuarioRef = FirebaseFirestore.getInstance().collection("usuarios").document(idAntigo);
+        DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(idAntigo);
         if (id.equals(idAntigo))
             return;
         usuario.setId(id);
-        FirebaseFirestore.getInstance().collection("usuarios").document(id).set(usuario);
-        FirebaseFirestore.getInstance().collection("usuarios").document(idAntigo).delete();
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id).set(usuario);
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(idAntigo).delete();
         for (Grupo grupo : getGrupos()) {
             grupo.getParticipantes().removeIf(usuarioRef::equals);
-            grupo.getParticipantes().add(FirebaseFirestore.getInstance().collection("usuarios").document(id));
-            FirebaseFirestore.getInstance().collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
+            grupo.getParticipantes().add(FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id));
+            FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(grupo.getId()).update("usuarios", grupo.getParticipantes());
             if (grupo.getAdministrador().equals(usuarioRef)){
-                grupo.setAdministrador(FirebaseFirestore.getInstance().collection("usuarios").document(id));
-                FirebaseFirestore.getInstance().collection("grupos").document(grupo.getId()).update("administrador", grupo.getAdministrador());
+                grupo.setAdministrador(FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id));
+                FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(grupo.getId()).update("administrador", grupo.getAdministrador());
             }
         }
         usuario.setId(id);
     }
 
     public void atualizarSenha(String senha, Context context){
+        if (senha == null || senha.isEmpty()) return;
         AuthService.alterarSenha(senha, context);
     }
 

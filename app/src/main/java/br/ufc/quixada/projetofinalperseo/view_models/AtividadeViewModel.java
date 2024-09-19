@@ -123,7 +123,7 @@ public class AtividadeViewModel extends BaseObservable {
         notifyPropertyChanged(BR.nome);
         notifyPropertyChanged(BR.esporte);
         notifyPropertyChanged(BR.descricao);
-        notifyPropertyChanged(BR.nomeCriador);
+        notifyPropertyChanged(BR.administrador);
     }
 
 

@@ -1,9 +1,8 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +13,9 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Objects;
-
+import br.ufc.quixada.projetofinalperseo.MainActivity;
+import br.ufc.quixada.projetofinalperseo.R;
 import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
-import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 
 
 public class TelaLogin extends Fragment {

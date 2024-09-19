@@ -1,4 +1,4 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
@@ -8,22 +8,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import br.ufc.quixada.projetofinalperseo.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link VerGrupo#newInstance} factory method to
+ * Use the {@link CriarAtividade#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VerGrupo extends Fragment {
-
-    public VerGrupo() {
+public class CriarAtividade extends Fragment {
+    public CriarAtividade() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
-    public static VerGrupo newInstance() {
-        VerGrupo fragment = new VerGrupo();
+    public static CriarAtividade newInstance() {
+        CriarAtividade fragment = new CriarAtividade();
         Bundle args = new Bundle();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -36,6 +36,6 @@ public class VerGrupo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ver_grupo, container, false);
+        return inflater.inflate(R.layout.fragment_criar_atividade, container, false);
     }
 }

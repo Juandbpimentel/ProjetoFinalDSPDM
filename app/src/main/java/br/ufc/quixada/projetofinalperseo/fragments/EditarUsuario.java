@@ -1,15 +1,22 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import br.ufc.quixada.projetofinalperseo.MainActivity;
+import br.ufc.quixada.projetofinalperseo.R;
+import br.ufc.quixada.projetofinalperseo.databinding.FragmentEditarUsuarioBinding;
+import br.ufc.quixada.projetofinalperseo.databinding.FragmentPerfilUsuarioBinding;
+import br.ufc.quixada.projetofinalperseo.models.Usuario;
+import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,9 +61,20 @@ public class EditarUsuario extends Fragment {
         // Inflate the layout for this fragment
         MainActivity mainActivity = (MainActivity) requireActivity();
         View view = inflater.inflate(R.layout.fragment_editar_usuario, container, false);
-        Button btnSalvar = view.findViewById(R.id.editar_usuario_botao_salvar);
 
+
+        UsuarioViewModel usuarioViewModel = mainActivity.usuarioViewModel;
+        FragmentEditarUsuarioBinding binding = FragmentEditarUsuarioBinding.bind(view);
+        binding.setEditarUsuarioViewModel(usuarioViewModel);
+        Usuario usuario = usuarioViewModel.getUsuario();
+
+        EditText senha = view.findViewById(R.id.editar_usuario_campo_senha);
+
+        Button btnSalvar = view.findViewById(R.id.editar_usuario_botao_salvar);
         btnSalvar.setOnClickListener((v) -> {
+            Log.d("EditarUsuario", "Email: " + usuarioViewModel.getUsuario().getEmail());
+            String senhaString = senha.getText().toString();
+            usuarioViewModel.atualizarUsuario(idUsuario, senhaString, mainActivity);
             Fragment fragment = PerfilUsuario.newInstance(idUsuario);
             mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
         });

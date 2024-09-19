@@ -4,7 +4,6 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.GeoPoint;
 
 public class Localizacao {
-    @DocumentId
     private String id;
     private String cidade;
     private String estado;

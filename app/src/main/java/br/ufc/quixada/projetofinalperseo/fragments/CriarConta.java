@@ -1,4 +1,4 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import br.ufc.quixada.projetofinalperseo.R;
 
 public class CriarConta extends Fragment {
 

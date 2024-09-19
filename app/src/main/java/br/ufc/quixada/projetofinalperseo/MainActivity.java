@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import br.ufc.quixada.projetofinalperseo.fragments.PerfilUsuario;
+import br.ufc.quixada.projetofinalperseo.fragments.TelaInicial;
+import br.ufc.quixada.projetofinalperseo.fragments.TelaLogin;
 import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
 import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 

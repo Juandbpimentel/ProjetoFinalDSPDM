@@ -1,4 +1,4 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
@@ -8,21 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import br.ufc.quixada.projetofinalperseo.R;
+import br.ufc.quixada.projetofinalperseo.databinding.FragmentVerGrupoBinding;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CriarGrupo#newInstance} factory method to
+ * Use the {@link VerGrupo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CriarGrupo extends Fragment {
+public class VerGrupo extends Fragment {
 
-    public CriarGrupo() {
+    public VerGrupo() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static CriarGrupo newInstance() {
-        CriarGrupo fragment = new CriarGrupo();
+    public static VerGrupo newInstance() {
+        VerGrupo fragment = new VerGrupo();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -37,6 +40,7 @@ public class CriarGrupo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_criar_grupo, container, false);
+        FragmentVerGrupoBinding binding = FragmentVerGrupoBinding.inflate(inflater, container, false);
+        return inflater.inflate(R.layout.fragment_ver_grupo, container, false);
     }
 }

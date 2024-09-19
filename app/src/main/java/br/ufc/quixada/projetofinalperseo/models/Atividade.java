@@ -6,7 +6,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Atividade {
-    @DocumentId
     private String id;
     private String nome;
     private String descricao;

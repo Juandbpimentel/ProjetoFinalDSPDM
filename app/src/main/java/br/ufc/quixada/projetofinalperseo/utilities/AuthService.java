@@ -38,6 +38,7 @@ public class AuthService {
             }else {
                 usuario = null;
                 Toast.makeText(context, "Erro ao criar usuário: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Log.d("AuthService", "Erro ao criar usuário: \""+usuario+"\" | " +task.getException());
             }
         });
         return usuario != null;
@@ -50,6 +51,7 @@ public class AuthService {
             }else {
                 usuario = null;
                 Toast.makeText(context, "Erro ao atualizar email de usuário: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Log.d("AuthService", "Erro ao atualizar email de usuário: \""+email+"\" | " +task.getException());
             }
         });
         return usuario != null;
@@ -62,6 +64,7 @@ public class AuthService {
             }else {
                 usuario = null;
                 Toast.makeText(context, "Erro ao atualizar senha de usuário: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Log.d("AuthService", "Erro ao atualizar senha de usuário: \""+senha+"\" | " +task.getException());
             }
         });
         return usuario != null;

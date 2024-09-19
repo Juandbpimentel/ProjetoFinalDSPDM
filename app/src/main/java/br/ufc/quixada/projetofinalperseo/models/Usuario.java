@@ -1,5 +1,6 @@
 package br.ufc.quixada.projetofinalperseo.models;
 
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 

@@ -1,128 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".CriarGrupo">
+    tools:context=".fragments.CriarGrupo">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="960dp">
+    <data>
+        <variable
+            name="criarGrupoViewModel"
+            type="br.ufc.quixada.projetofinalperseo.view_models.GrupoViewModel" />
+    </data>
 
-        <TextView
-            android:id="@+id/criar_grupo_titulo"
-            android:layout_width="281dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:text="Criar Grupo"
-            android:textColor="#cc4725"
-            android:textSize="52dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/criar_grupo_label_nome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nome do grupo"
-            android:textColor="#cc4725"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_nome"
-            app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_nome" />
-
-        <TextView
-            android:id="@+id/criar_grupo_label_localizacao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Localização"
-            android:textColor="#cc4725"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/criar_grupo_mapa"
-            app:layout_constraintStart_toStartOf="@+id/criar_grupo_mapa" />
-
-        <EditText
-            android:id="@+id/criar_grupo_campo_nome"
+    <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="50dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/criar_grupo_titulo" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/criar_grupo_campo_descricao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="50dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_nome" />
+            <TextView
+                android:id="@+id/criar_grupo_titulo"
+                android:layout_width="281dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:text="Criar Grupo"
+                android:textColor="#cc4725"
+                android:textSize="52dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/criar_grupo_label_descricao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Descrição"
-            android:textColor="#cc4725"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_descricao"
-            app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_descricao" />
+            <TextView
+                android:id="@+id/criar_grupo_label_nome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome do grupo"
+                android:textColor="#cc4725"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_nome"
+                app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_nome" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/criar_grupo_mapa"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_esporte" />
+            <TextView
+                android:id="@+id/criar_grupo_label_localizacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Localização"
+                android:textColor="#cc4725"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/criar_grupo_mapa"
+                app:layout_constraintStart_toStartOf="@+id/criar_grupo_mapa" />
 
-        <Button
-            android:id="@+id/criar_grupo_button"
-            android:layout_width="138dp"
-            android:layout_height="63dp"
-            android:layout_marginTop="48dp"
-            android:text="Criar grupo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/criar_grupo_mapa" />
+            <EditText
+                android:id="@+id/criar_grupo_campo_nome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="50dp"
+                android:ems="10"
+                android:inputType="text"
+                android:text="@{criarGrupoViewModel.nome}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/criar_grupo_titulo" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Esporte"
-            android:textColor="#cc4725"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_esporte"
-            app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_esporte" />
+            <EditText
+                android:id="@+id/criar_grupo_campo_descricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                android:ems="10"
+                android:inputType="text"
+                android:text="@{criarGrupoViewModel.descricao}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_nome" />
 
-        <EditText
-            android:id="@+id/criar_grupo_campo_esporte"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="50dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_descricao" />
+            <TextView
+                android:id="@+id/criar_grupo_label_descricao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descrição"
+                android:textColor="#cc4725"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_descricao"
+                app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_descricao" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/criar_grupo_mapa"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_esporte" />
+
+            <Button
+                android:id="@+id/criar_grupo_button"
+                android:layout_width="138dp"
+                android:layout_height="63dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="50dp"
+                android:text="Criar grupo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/criar_grupo_mapa" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Esporte"
+                android:textColor="#cc4725"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/criar_grupo_campo_esporte"
+                app:layout_constraintStart_toStartOf="@+id/criar_grupo_campo_esporte" />
+
+            <EditText
+                android:id="@+id/criar_grupo_campo_esporte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="50dp"
+                android:ems="10"
+                android:inputType="text"
+                android:text="@{criarGrupoViewModel.esporte}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/criar_grupo_campo_descricao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

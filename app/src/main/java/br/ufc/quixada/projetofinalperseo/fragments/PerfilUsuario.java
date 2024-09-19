@@ -1,10 +1,11 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import br.ufc.quixada.projetofinalperseo.MainActivity;
+import br.ufc.quixada.projetofinalperseo.R;
 import br.ufc.quixada.projetofinalperseo.databinding.FragmentPerfilUsuarioBinding;
 import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
 import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
@@ -62,9 +65,10 @@ public class PerfilUsuario extends Fragment {
         MainActivity mainActivity = (MainActivity) requireActivity();
 
         UsuarioViewModel usuarioViewModel = mainActivity.usuarioViewModel;
+        Log.d("PerfilUsuario", "Email: " + usuarioViewModel.getUsuario().getEmail());
         FragmentPerfilUsuarioBinding binding = FragmentPerfilUsuarioBinding.bind(view);
         binding.setUsuarioViewModel(usuarioViewModel);
-        binding.setLifecycleOwner(this);
+
         botaoEditarPerfil.setOnClickListener((v) -> {
             BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView);
             Fragment fragment = EditarUsuario.newInstance(idUsuario);

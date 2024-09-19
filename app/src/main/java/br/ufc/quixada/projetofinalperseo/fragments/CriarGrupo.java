@@ -1,4 +1,4 @@
-package br.ufc.quixada.projetofinalperseo;
+package br.ufc.quixada.projetofinalperseo.fragments;
 
 import android.os.Bundle;
 
@@ -8,18 +8,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import br.ufc.quixada.projetofinalperseo.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CriarAtividade#newInstance} factory method to
+ * Use the {@link CriarGrupo#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CriarAtividade extends Fragment {
-    public CriarAtividade() {
+public class CriarGrupo extends Fragment {
+
+    public CriarGrupo() {
         // Required empty public constructor
     }
 
-    public static CriarAtividade newInstance() {
-        CriarAtividade fragment = new CriarAtividade();
+
+    // TODO: Rename and change types and number of parameters
+    public static CriarGrupo newInstance() {
+        CriarGrupo fragment = new CriarGrupo();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -34,6 +39,6 @@ public class CriarAtividade extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_criar_atividade, container, false);
+        return inflater.inflate(R.layout.fragment_criar_grupo, container, false);
     }
 }
