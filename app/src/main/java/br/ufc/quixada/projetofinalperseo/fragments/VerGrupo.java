@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.ufc.quixada.projetofinalperseo.R;
@@ -32,10 +35,11 @@ public class VerGrupo extends Fragment {
     public String idUsuario;
     public GrupoViewModel grupoViewModel;
     private FirebaseFirestore db;
-    private FragmentVerGrupoBinding binding;
+    private RecyclerView recyclerViewAtividades;
+    private AtividadeAdapter atividadeAdapter;
+    private List<Atividade> atividades;
 
-    public VerGrupo(){
-
+    public VerGrupo() {
     }
 
     public static VerGrupo newInstance(String idUsuario, String idGrupo) {
@@ -44,7 +48,6 @@ public class VerGrupo extends Fragment {
         args.putString(ARG_ID_USUARIO, idUsuario);
         args.putString(ARG_ID_GRUPO, idGrupo);
         fragment.setArguments(args);
-        Log.d("Projeto Mobile - Ver Grupo", "Criando fragmento VerGrupo com idUsuario: " + idUsuario + " e idGrupo: " + idGrupo);
         return fragment;
     }
 
@@ -55,44 +58,48 @@ public class VerGrupo extends Fragment {
             idGrupo = getArguments().getString(ARG_ID_GRUPO);
             idUsuario = getArguments().getString(ARG_ID_USUARIO);
         }
+        db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-        grupoViewModel = new GrupoViewModel();
-        DocumentReference docRef = db.collection("grupos").document(idGrupo);
-        docRef.get().addOnSuccessListener(snapshot -> {
-            if (snapshot == null || !snapshot.exists()) {
-                Log.d("Projeto Mobile - Carregando Grupo View Model", "Não existe grupo com id: " + idGrupo);
-                return;
-            }
-            Grupo grupo = snapshot.toObject(Grupo.class);
-            if (grupo == null) {
-                Log.d("Projeto Mobile - Carregando Grupo View Model", "Grupo nulo");
-                return;
-            }
-            grupoViewModel.setGrupo(grupo);
-            Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + idGrupo + " - " + grupo);
-        }).addOnFailureListener(e -> {
-            Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + idGrupo + " - " + e.getLocalizedMessage());
-        });
-        View view = inflater.inflate(R.layout.fragment_ver_grupo, container, false);
-        binding = FragmentVerGrupoBinding.bind(view);
-        binding.setGrupoViewModel(grupoViewModel);
-        binding.setLifecycleOwner(this);
+        FragmentVerGrupoBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ver_grupo, container, false);
+        View view = binding.getRoot();
 
-         setupRecyclerView(view, container);
+        // Inicialize o RecyclerView
+        recyclerViewAtividades = view.findViewById(R.id.recycler_view_atividadese);
+        recyclerViewAtividades.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Inicialize a lista de atividades e o adapter
+        atividades = new ArrayList<>();
+        atividadeAdapter = new AtividadeAdapter(atividades, idGrupo);
+        recyclerViewAtividades.setAdapter(atividadeAdapter);
+
+        // Carregue as atividades do grupo
+        carregarAtividades();
 
         return view;
     }
 
-    private void setupRecyclerView(View view, ViewGroup container) {
-        RecyclerView recyclerView = view.findViewById(R.id.teste_teste);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        List<Atividade> atividades = grupoViewModel.getAtividades(); // Supondo que este método existe
-        AtividadeAdapter adapter = new AtividadeAdapter(atividades, idGrupo); // Pass idGrupo here
-        recyclerView.setAdapter(adapter);
+    private void carregarAtividades() {
+        // Lógica para carregar as atividades do grupo e atualizar o adapter
+        FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
+        db.collection("grupos").document(idGrupo).get().addOnSuccessListener(snapshot -> {
+            Grupo grupo = snapshot.toObject(Grupo.class);
+            if (grupo != null) {
+                grupo.getAtividades().forEach(docRef -> {
+                    docRef.get().addOnSuccessListener(atividadeSnapshot -> {
+                        Atividade atividade = atividadeSnapshot.toObject(Atividade.class);
+                        if (atividade != null) {
+                            atividades.add(atividade);
+                            atividadeAdapter.notifyDataSetChanged();
+                        }
+                    });
+                });
+            }
+        });
     }
+
+
 }

@@ -14,8 +14,8 @@ import br.ufc.quixada.projetofinalperseo.models.Atividade;
 import br.ufc.quixada.projetofinalperseo.view_models.AtividadeViewModel;
 import br.ufc.quixada.projetofinalperseo.databinding.CardAtividadeBinding;
 
+// AtividadeAdapter.java
 public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.AtividadeViewHolder> {
-
     private List<Atividade> atividades;
     private String idGrupo;
 
@@ -24,13 +24,16 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.Ativ
         this.idGrupo = idGrupo;
     }
 
+    public void setAtividades(List<Atividade> atividades) {
+        this.atividades = atividades;
+    }
+
     @NonNull
     @Override
     public AtividadeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_atividade, parent, false);
         return new AtividadeViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull AtividadeViewHolder holder, int position) {
@@ -48,8 +51,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.Ativ
     }
 
     static class AtividadeViewHolder extends RecyclerView.ViewHolder {
-
-        TextView nome,descricao,dataAgenda;
+        TextView nome, descricao, dataAgenda;
         public String idAtividade;
         public String idGrupo;
 
@@ -59,6 +61,5 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.Ativ
             descricao = itemView.findViewById(R.id.card_atividade_descricao);
             dataAgenda = itemView.findViewById(R.id.card_atividade_data);
         }
-
     }
 }

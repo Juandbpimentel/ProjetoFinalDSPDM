@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,6 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import br.ufc.quixada.projetofinalperseo.models.Atividade;
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
 import br.ufc.quixada.projetofinalperseo.models.Usuario;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 public class GrupoViewModel extends BaseObservable {
     private Grupo grupo;
@@ -53,23 +57,35 @@ public class GrupoViewModel extends BaseObservable {
 
     public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
 
-    public List<Atividade> getAtividades(){
+    public void getAtividades(FirebaseCallback<List<Atividade>> callback) {
         CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
-        AtomicReference<List<Atividade>> atividades = new AtomicReference<>();
-        Log.d("Projeto Mobile - Grupo View Model", "Carregando atividades do grupo com id: " + grupo.getId());
-        if (grupo.getAtividades() == null) return List.of();
-        grupo.getAtividades().forEach(documentReference -> {
-            atividadesRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
-                Atividade atividade = documentSnapshot.toObject(Atividade.class);
-                if (atividade == null) return;
-                atividades.get().add(atividade);
+        List<Atividade> atividades = new ArrayList<>();
+
+        if (grupo.getAtividades() == null) {
+            callback.onCallback(List.of());
+            return;
+        }
+
+        for (DocumentReference docRef : grupo.getAtividades()) {
+            atividadesRef.document(docRef.getId()).get().addOnSuccessListener(snapshot -> {
+                Atividade atividade = snapshot.toObject(Atividade.class);
+                if (atividade != null) {
+                    atividades.add(atividade);
+                }
+                // Se todas as atividades forem carregadas, retorna o callback
+                if (atividades.size() == grupo.getAtividades().size()) {
+                    callback.onCallback(atividades);
+                }
             }).addOnFailureListener(e -> {
-                Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar participantes do grupo com id: " + grupo.getId() + " - " + e.getLocalizedMessage());
-                return;
+                Log.d("GrupoViewModel", "Erro ao carregar atividade: " + e.getMessage());
             });
-        });
-        return atividades.get();
+        }
     }
+
+    public interface FirebaseCallback<T> {
+        void onCallback(T result);
+    }
+
 
     public Atividade getAtividade(String id){
         CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
@@ -87,21 +103,31 @@ public class GrupoViewModel extends BaseObservable {
         return atividade.get();
     }
 
-    public List<Usuario> getParticipantes(){
+    public void getParticipantes(FirebaseCallback<List<Usuario>> callback) {
         CollectionReference usuariosRef = FirebaseFirestore.getInstance().collection("usuarios");
-        AtomicReference<List<Usuario>> usuarios = new AtomicReference<>();
-        grupo.getParticipantes().forEach(documentReference -> {
-            usuariosRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
-                Usuario usuario = documentSnapshot.toObject(Usuario.class);
-                if (usuario == null) return;
-                usuarios.get().add(usuario);
+        List<Usuario> participantes = new ArrayList<>();
+
+        if (grupo.getParticipantes() == null) {
+            callback.onCallback(List.of());
+            return;
+        }
+
+        for (DocumentReference docRef : grupo.getParticipantes()) {
+            usuariosRef.document(docRef.getId()).get().addOnSuccessListener(snapshot -> {
+                Usuario usuario = snapshot.toObject(Usuario.class);
+                if (usuario != null) {
+                    participantes.add(usuario);
+                }
+                // Se todos os participantes forem carregados, retorna o callback
+                if (participantes.size() == grupo.getParticipantes().size()) {
+                    callback.onCallback(participantes);
+                }
             }).addOnFailureListener(e -> {
-                Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar participantes do grupo com id: " + grupo.getId() + " - " + e.getLocalizedMessage());
-                return;
+                Log.d("GrupoViewModel", "Erro ao carregar participante: " + e.getMessage());
             });
-        });
-        return usuarios.get();
+        }
     }
+
 
     //getters e setters
     @Bindable
