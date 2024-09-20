@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 public class GrupoViewModel extends BaseObservable {
     private Grupo grupo;
+    private String administrador;
 
     public GrupoViewModel(String id) {
         Log.d("Doideira mano Projeto Mobile - Grupo View Model", "Carregando grupo com id: " + id);
@@ -45,7 +46,6 @@ public class GrupoViewModel extends BaseObservable {
             }
             setGrupo(grupo);
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
-            notifyPropertyChanged(BR.nome);
         }).addOnFailureListener(e -> {
             Log.d("Doideira mano Projeto Mobile 3", "Sucesso ao carregar grupo com id: " + id);
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
@@ -55,7 +55,9 @@ public class GrupoViewModel extends BaseObservable {
 
     public GrupoViewModel() { this.grupo = new Grupo(); }
 
-    public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
+    public GrupoViewModel(Grupo grupo) {
+        setGrupo(grupo);
+    }
 
     public void getAtividades(FirebaseCallback<List<Atividade>> callback) {
         CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
@@ -171,6 +173,19 @@ public class GrupoViewModel extends BaseObservable {
 
     public void setGrupo(Grupo grupo){
         this.grupo = grupo;
+        grupo.getAdministrador().get().addOnSuccessListener(snapshot -> {
+            if (snapshot == null || !snapshot.exists()) {
+                Log.d("Projeto Mobile - Grupo View Model", "Não existe administrador para o grupo com id: " + grupo.getId());
+                return;
+            }
+            Usuario usuario = snapshot.toObject(Usuario.class);
+            if (usuario == null) {
+                Log.d("Projeto Mobile - Grupo View Model", "Administrador nulo");
+                return;
+            }
+            setAdministrador(usuario.getNome());
+            Log.d("Projeto Mobile - Grupo View Model", "Carregando administrador:" + usuario);
+        });
         notifyPropertyChanged(BR.nome);
         notifyPropertyChanged(BR.esporte);
         notifyPropertyChanged(BR.descricao);
@@ -183,18 +198,13 @@ public class GrupoViewModel extends BaseObservable {
 
     @Bindable
     public String getAdministrador(){
-        if (grupo == null) return "Grupo não encontrado";
-        AtomicReference<Usuario> administrador = new AtomicReference<>();
-        grupo.getAdministrador().get().addOnSuccessListener(snapshot -> {
-            if (snapshot == null || !snapshot.exists()) {
-                Log.d("Projeto Mobile - Grupo View Model", "Não existe administrador para o grupo com id: " + grupo.getId());
-                return;
-            }
-            Usuario usuario = snapshot.toObject(Usuario.class);
-            administrador.set(usuario);
-        });
-        if (administrador.get() == null) return "Grupo não encontrado";
-        return administrador.get().getNome();
+        if (administrador == null) return "Administrador não encontrado";
+        return administrador;
+    }
+
+    public void setAdministrador(String administrador){
+        this.administrador = administrador;
+        notifyPropertyChanged(BR.administrador);
     }
 
     //Metodos Firebase
