@@ -66,6 +66,8 @@ public class VerGrupo extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentVerGrupoBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ver_grupo, container, false);
         View view = binding.getRoot();
+        GrupoViewModel grupoViewModel = new GrupoViewModel(idGrupo);
+        binding.setGrupoViewModel(grupoViewModel);
 
         // Inicialize o RecyclerView
         recyclerViewAtividades = view.findViewById(R.id.recycler_view_atividadese);
