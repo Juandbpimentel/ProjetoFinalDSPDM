@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,6 +71,16 @@ public class VerGrupos extends Fragment {
             } else {
                 Log.e(TAG, "Error getting documents: ", task.getException());
             }
+        });
+
+        // Adicionar OnClickListener ao botão
+        Button criarGrupoButton = view.findViewById(R.id.ver_grupos_criar_grupo_botao);
+        criarGrupoButton.setOnClickListener(v -> {
+            Fragment fragment = CriarGrupo.newInstance();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_frame_layout, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         return view;

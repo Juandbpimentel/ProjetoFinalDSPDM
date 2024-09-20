@@ -5,6 +5,8 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.UUID;
+
 public class Atividade {
     private String id;
     private String nome;
@@ -18,6 +20,7 @@ public class Atividade {
 
     public Atividade(String nome , String descricao, Timestamp dataAgenda, Grupo grupo, Localizacao localizacao) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
+        this.id = UUID.randomUUID().toString();
         this.dataAgenda = dataAgenda;
         this.descricao = descricao;
         this.nome = nome;

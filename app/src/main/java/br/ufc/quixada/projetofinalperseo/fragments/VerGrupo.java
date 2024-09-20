@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -38,6 +40,7 @@ public class VerGrupo extends Fragment {
     private RecyclerView recyclerViewAtividades;
     private AtividadeAdapter atividadeAdapter;
     private List<Atividade> atividades;
+    private Button cadastrarAtividadeButton;
 
     public VerGrupo() {
     }
@@ -78,6 +81,11 @@ public class VerGrupo extends Fragment {
 
         // Carregue as atividades do grupo
         carregarAtividades();
+        idGrupo = getArguments().getString("idGrupo");
+
+        cadastrarAtividadeButton = view.findViewById(R.id.ver_grupo_cadastrar_atividade);
+        cadastrarAtividadeButton.setOnClickListener(v -> inflarCriarAtividade());
+
 
         return view;
     }
@@ -100,6 +108,15 @@ public class VerGrupo extends Fragment {
             }
         });
     }
+
+    private void inflarCriarAtividade() {
+        Fragment criarAtividadeFragment = CriarAtividade.newInstance(idGrupo);
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_frame_layout, criarAtividadeFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 
 
 }

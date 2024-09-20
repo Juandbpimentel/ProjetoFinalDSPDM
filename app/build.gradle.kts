@@ -58,9 +58,7 @@ dependencies {
     implementation(libs.google.firebase.firestore)
     implementation(libs.firebase.auth)
     implementation(libs.play.services.maps)
-
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }
 
 secrets {

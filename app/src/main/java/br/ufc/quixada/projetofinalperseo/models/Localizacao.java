@@ -3,6 +3,8 @@ package br.ufc.quixada.projetofinalperseo.models;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.UUID;
+
 public class Localizacao {
     private String id;
     private String cidade;
@@ -11,6 +13,7 @@ public class Localizacao {
     private GeoPoint geoPoint;
 
     public Localizacao() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public Localizacao(String id, String cidade, String estado, String pais, GeoPoint geoPoint) {
