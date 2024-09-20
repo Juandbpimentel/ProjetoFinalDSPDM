@@ -154,10 +154,17 @@ public class GrupoViewModel extends BaseObservable {
     @Bindable
     public String getAdministrador(){
         if (grupo == null) return "Grupo não encontrado";
-        AtomicReference<DocumentSnapshot> administrador = new AtomicReference<>();
-        grupo.getAdministrador().get().addOnSuccessListener(administrador::set);
+        AtomicReference<Usuario> administrador = new AtomicReference<>();
+        grupo.getAdministrador().get().addOnSuccessListener(snapshot -> {
+            if (snapshot == null || !snapshot.exists()) {
+                Log.d("Projeto Mobile - Grupo View Model", "Não existe administrador para o grupo com id: " + grupo.getId());
+                return;
+            }
+            Usuario usuario = snapshot.toObject(Usuario.class);
+            administrador.set(usuario);
+        });
         if (administrador.get() == null) return "Grupo não encontrado";
-        return Objects.requireNonNull(administrador.get().toObject(Usuario.class)).getNome();
+        return administrador.get().getNome();
     }
 
     //Metodos Firebase
