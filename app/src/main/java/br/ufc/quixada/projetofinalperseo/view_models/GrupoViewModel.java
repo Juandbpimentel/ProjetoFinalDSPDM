@@ -7,14 +7,13 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import br.ufc.quixada.projetofinalperseo.models.Atividade;
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
@@ -25,14 +24,16 @@ public class GrupoViewModel extends BaseObservable {
 
     public GrupoViewModel(String id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-        final DocumentReference docRef = db.collection("grupos").document(id);
-        Task<DocumentSnapshot> task = docRef.get();
-        task.addOnSuccessListener((resultado) -> {
-            if (!resultado.exists()) {
+        db.collection("grupos").document(id).addSnapshotListener((snapshot, e) -> {
+            if (e != null){
+                Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
+                return;
+            }
+            if (snapshot == null || !snapshot.exists()) {
                 Log.d("Projeto Mobile - Carregando Grupo View Model", "Não existe grupo com id: " + id);
                 return;
             }
-            Grupo grupo = resultado.toObject(Grupo.class);
+            Grupo grupo = snapshot.toObject(Grupo.class);
             if (grupo == null) {
                 Log.d("Projeto Mobile - Carregando Grupo View Model", "Grupo nulo");
                 return;
@@ -41,10 +42,6 @@ public class GrupoViewModel extends BaseObservable {
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
             notifyPropertyChanged(BR.nome);
             notifyPropertyChanged(BR.email);
-
-        });
-        task.addOnFailureListener((e) -> {
-            Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
         });
     }
 
@@ -53,17 +50,51 @@ public class GrupoViewModel extends BaseObservable {
     public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
 
     public List<Atividade> getAtividades(){
-        return grupo.getAtividades().stream().map(DocumentReference::get).collect(Collectors.toList()).stream().map(documentSnapshot -> documentSnapshot.getResult().toObject(Atividade.class)).collect(Collectors.toList());
+        CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
+        AtomicReference<List<Atividade>> atividades = new AtomicReference<>();
+        grupo.getParticipantes().forEach(documentReference -> {
+            atividadesRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
+                Atividade atividade = documentSnapshot.toObject(Atividade.class);
+                if (atividade == null) return;
+                atividades.get().add(atividade);
+            }).addOnFailureListener(e -> {
+                Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar participantes do grupo com id: " + grupo.getId() + " - " + e.getLocalizedMessage());
+                return;
+            });
+        });
+        return atividades.get();
     }
 
     public Atividade getAtividade(String id){
-        return grupo.getAtividades().stream().map(DocumentReference::get).collect(Collectors.toList())
-                .stream().map(documentSnapshot -> documentSnapshot.getResult().toObject(Atividade.class)).collect(Collectors.toList())
-                .stream().filter(atividade -> atividade.getId().equals(id)).findFirst().orElse(null);
+        CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
+        AtomicReference<Atividade> atividade = new AtomicReference<>();
+        grupo.getParticipantes().forEach(documentReference -> {
+            atividadesRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
+                Atividade atividadeTemp = documentSnapshot.toObject(Atividade.class);
+                if (atividadeTemp == null) return;
+                atividade.set(atividadeTemp);
+            }).addOnFailureListener(e -> {
+                Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar participantes do grupo com id: " + grupo.getId() + " - " + e.getLocalizedMessage());
+                return;
+            });
+        });
+        return atividade.get();
     }
 
     public List<Usuario> getParticipantes(){
-        return grupo.getParticipantes().stream().map(DocumentReference::get).collect(Collectors.toList()).stream().map(documentSnapshot -> documentSnapshot.getResult().toObject(Usuario.class)).collect(Collectors.toList());
+        CollectionReference usuariosRef = FirebaseFirestore.getInstance().collection("usuarios");
+        AtomicReference<List<Usuario>> usuarios = new AtomicReference<>();
+        grupo.getParticipantes().forEach(documentReference -> {
+            usuariosRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
+                Usuario usuario = documentSnapshot.toObject(Usuario.class);
+                if (usuario == null) return;
+                usuarios.get().add(usuario);
+            }).addOnFailureListener(e -> {
+                Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar participantes do grupo com id: " + grupo.getId() + " - " + e.getLocalizedMessage());
+                return;
+            });
+        });
+        return usuarios.get();
     }
 
     //getters e setters
@@ -83,7 +114,7 @@ public class GrupoViewModel extends BaseObservable {
         if (grupo == null) return "Grupo não encontrado";
         return grupo.getDescricao();
     }
-    public void setDescricao(String descricao, Context context){
+    public void setDescricao(String descricao){
         grupo.setDescricao(descricao);
         notifyPropertyChanged(BR.email);
     }
@@ -101,7 +132,6 @@ public class GrupoViewModel extends BaseObservable {
         if (grupo == null) return "Grupo não encontrado";
         return grupo.getEsporte();
     }
-
     public void setEsporte(String esporte){
         grupo.setEsporte(esporte);
         notifyPropertyChanged(BR.esporte);
@@ -122,54 +152,37 @@ public class GrupoViewModel extends BaseObservable {
     @Bindable
     public String getAdministrador(){
         if (grupo == null) return "Grupo não encontrado";
-        return Objects.requireNonNull(grupo.getAdministrador().get().getResult().toObject(Usuario.class)).getNome();
+        AtomicReference<DocumentSnapshot> administrador = new AtomicReference<>();
+        grupo.getAdministrador().get().addOnSuccessListener(administrador::set);
+        if (administrador.get() == null) return "Grupo não encontrado";
+        return Objects.requireNonNull(administrador.get().toObject(Usuario.class)).getNome();
     }
 
     //Metodos Firebase
-    public void atualizarNome(String nome, String id){
+    public void atualizarNome(String nome){
         if (nome == null || nome.equals(grupo.getNome())) return;
-        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("nome", nome);
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(grupo.getId()).update("nome", nome);
         grupo.setNome(nome);
     }
 
-    public void atualizarEsporte(String esporte, String id){
+    public void atualizarEsporte(String esporte){
         if (esporte == null || esporte.equals(grupo.getEsporte())) return;
-        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("esporte", esporte);
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(grupo.getId()).update("esporte", esporte);
         grupo.setEsporte(esporte);
     }
 
-    public void atualizarDescricao(String descricao, String id){
+    public void atualizarDescricao(String descricao){
         if (descricao == null || descricao.equals(grupo.getDescricao())) return;
-        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(id).update("descricao", descricao);
+        FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("grupos").document(grupo.getId()).update("descricao", descricao);
         grupo.setDescricao(descricao);
-    }
-
-    public void atualizarId(String id, String idAntigo){
-        DocumentReference grupoRef = FirebaseFirestore.getInstance().collection("grupos").document(idAntigo);
-        if (idAntigo.equals(id))
-            return;
-        grupo.setId(id);
-        FirebaseFirestore.getInstance().collection("grupos").document(id).set(grupo);
-        FirebaseFirestore.getInstance().collection("grupos").document(idAntigo).delete();
-
-        for (Usuario usuario : getParticipantes()) {
-            usuario.getGrupos().removeIf(grupoRef::equals);
-            usuario.getGrupos().add(FirebaseFirestore.getInstance().collection("grupos").document(id));
-            FirebaseFirestore.getInstance().collection("usuarios").document(usuario.getId()).update("grupos", usuario.getGrupos());
-        }
-        for (Atividade atividade : getAtividades()) {
-            atividade.setGrupo(FirebaseFirestore.getInstance().collection("grupos").document(id));
-            FirebaseFirestore.getInstance().collection("atividades").document(atividade.getId()).update("grupo", atividade.getGrupo());
-        }
     }
 
     public void atualizarGrupo(Grupo grupoAntigo,Context context){
         if (grupoAntigo == null) return;
         if (grupo.getId().equals(grupoAntigo.getId())) return;
 
-        atualizarDescricao(grupo.getDescricao(), grupoAntigo.getId());
-        atualizarNome(grupo.getNome(), grupoAntigo.getId());
-        atualizarEsporte(grupo.getEsporte(), grupoAntigo.getId());
-        atualizarId(grupo.getId(), grupoAntigo.getId());
+        atualizarDescricao(grupo.getDescricao());
+        atualizarNome(grupo.getNome());
+        atualizarEsporte(grupo.getEsporte());
     }
 }
