@@ -9,12 +9,15 @@ import androidx.databinding.library.baseAdapters.BR;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import br.ufc.quixada.projetofinalperseo.models.Atividade;
 import br.ufc.quixada.projetofinalperseo.models.Grupo;
@@ -40,8 +43,8 @@ public class AtividadeViewModel extends BaseObservable {
             setAtividade(atividade);
             Log.d("Projeto Mobile - Carregando Atividade View Model", "Carregado atividade com id: " + id + " - " + atividade);
             notifyPropertyChanged(BR.nome);
-            notifyPropertyChanged(BR.email);
-
+            notifyPropertyChanged(BR.descricao);
+            notifyPropertyChanged(BR.data);
         });
         task.addOnFailureListener((e) -> {
             Log.d("Projeto Mobile - Carregando Atividade View Model", "Erro ao carregar atividade com id: " + id + " - " + e.getLocalizedMessage());
@@ -94,7 +97,19 @@ public class AtividadeViewModel extends BaseObservable {
     }
 
     public Grupo getGrupo(){
-        return atividade.getGrupo().get().getResult().toObject(Grupo.class);
+        DocumentReference grupoRef = atividade.getGrupo();
+        AtomicReference<Grupo> grupo = new AtomicReference<>();
+        grupoRef.get().addOnSuccessListener(documentSnapshot -> {
+            Grupo grupoResult = documentSnapshot.toObject(Grupo.class);
+            grupo.set(grupoResult);
+            if (grupo == null) return;
+        }).addOnFailureListener(e -> {
+            Log.d("Projeto Mobile - Grupo View Model", "Erro ao carregar grupo com id: " + grupoRef.getId() + " - " + e.getLocalizedMessage());
+            return;
+        });
+
+        if (grupo.get() == null) return null;
+        return grupo.get();
     }
 
     public void setGrupo(Grupo grupoNovo){

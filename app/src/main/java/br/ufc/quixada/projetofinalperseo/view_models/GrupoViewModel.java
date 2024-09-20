@@ -37,7 +37,9 @@ public class GrupoViewModel extends BaseObservable {
             setGrupo(grupo);
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
             notifyPropertyChanged(BR.nome);
-            notifyPropertyChanged(BR.email);
+            notifyPropertyChanged(BR.esporte);
+            notifyPropertyChanged(BR.descricao);
+            notifyPropertyChanged(BR.administrador);
         }).addOnFailureListener(e -> {
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
         });
@@ -48,9 +50,10 @@ public class GrupoViewModel extends BaseObservable {
     public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
 
     public List<Atividade> getAtividades(){
-        CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
+        CollectionReference atividadesRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("atividades");
         AtomicReference<List<Atividade>> atividades = new AtomicReference<>();
-        grupo.getParticipantes().forEach(documentReference -> {
+        if (grupo.getAtividades() == null) return List.of();
+        grupo.getAtividades().forEach(documentReference -> {
             atividadesRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
                 Atividade atividade = documentSnapshot.toObject(Atividade.class);
                 if (atividade == null) return;
@@ -60,6 +63,7 @@ public class GrupoViewModel extends BaseObservable {
                 return;
             });
         });
+        if (atividades.get() == null) return List.of();
         return atividades.get();
     }
 
