@@ -128,7 +128,7 @@ public class UsuarioViewModel extends BaseObservable {
     public void criarUsuario( String senha, Context context ){
         try{
             AuthService.criarUsuario(usuario.getEmail(), senha , context);
-            FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(novoUsuario.getId()).set(novoUsuario);
+            FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(usuario.getId()).set(usuario.getId());
             setUsuario(usuario);
         }catch (Exception e){
             e.printStackTrace();
