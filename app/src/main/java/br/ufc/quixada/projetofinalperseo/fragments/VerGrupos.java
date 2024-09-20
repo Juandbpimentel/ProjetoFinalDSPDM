@@ -29,6 +29,10 @@ import br.ufc.quixada.projetofinalperseo.models.Grupo;
  * create an instance of this fragment.
  */
 public class VerGrupos extends Fragment {
+    public static final String ARG_ID_GRUPO = "idGrupo";
+    public String idGrupo;
+    public static final String ARG_ID_USUARIO = "idUsuario";
+    public String idUsuario;
     public VerGrupos() {
         // Required empty public constructor
     }
@@ -60,7 +64,7 @@ public class VerGrupos extends Fragment {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 List<Grupo> grupos = task.getResult().toObjects(Grupo.class);
-                GrupoAdapter adapter = new GrupoAdapter(grupos);
+                GrupoAdapter adapter = new GrupoAdapter(grupos, null);
                 recyclerView.setAdapter(adapter);
             } else {
                 Log.e(TAG, "Error getting documents: ", task.getException());
