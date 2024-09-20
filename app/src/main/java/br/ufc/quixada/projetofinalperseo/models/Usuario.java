@@ -59,6 +59,10 @@ public class Usuario {
     }
 
     public Usuario() {
+        this.id = UUID.randomUUID().toString();
+        this.nome = "";
+        this.email = "";
+        this.grupos = new ArrayList<>();
     }
 
     public String getId() {
