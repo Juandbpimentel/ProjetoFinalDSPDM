@@ -12,7 +12,6 @@ public class Grupo {
     private String nome;
     private String descricao;
     private DocumentReference administrador;
-    private DocumentReference localizacao;
     private List<DocumentReference> participantes;
     private List<DocumentReference> atividades;
     private String esporte;
@@ -24,54 +23,49 @@ public class Grupo {
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", administrador=" + administrador +
-                ", localizacao=" + localizacao +
                 ", participantes=[" + participantes.stream().map(DocumentReference::getId).collect(Collectors.joining(", ")) +
                 "], atividades=" + atividades.stream().map(DocumentReference::getId).collect(Collectors.joining(", ")) +
                 ", esporte='" + esporte + '\'' +
                 '}';
     }
 
-    public Grupo(String nome, String descricao, Usuario administrador, Localizacao localizacao, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
+    public Grupo(String nome, String descricao, Usuario administrador, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.nome = nome;
         this.descricao = descricao;
         this.administrador = db.collection("usuarios").document(administrador.getId());
-        this.localizacao = db.collection("localizacoes").document(localizacao.getId());
         this.participantes = participantes.stream().map(usuario -> db.collection("usuarios").document(usuario.getId())).collect(Collectors.toList());
         this.atividades = atividades.stream().map(atividade -> db.collection("atividades").document(atividade.getId())).collect(Collectors.toList());
         this.esporte = esporte;
     }
 
-    public Grupo(String id, String nome, String descricao, Usuario administrador, Localizacao localizacao, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
+    public Grupo(String id, String nome, String descricao, Usuario administrador, List<Usuario> participantes, List<Atividade> atividades, String esporte) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.administrador = db.collection("usuarios").document(administrador.getId());
-        this.localizacao = db.collection("localizacoes").document(localizacao.getId());
         this.participantes = participantes.stream().map(usuario -> db.collection("usuarios").document(usuario.getId())).collect(Collectors.toList());
         this.atividades = atividades.stream().map(atividade -> db.collection("atividades").document(atividade.getId())).collect(Collectors.toList());
         this.esporte = esporte;
     }
 
-    public Grupo(String nome, String descricao, DocumentReference administrador, DocumentReference localizacao, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
+    public Grupo(String nome, String descricao, DocumentReference administrador, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.nome = nome;
         this.descricao = descricao;
         this.administrador = administrador;
-        this.localizacao = localizacao;
         this.participantes = participantes;
         this.atividades = atividades;
         this.esporte = esporte;
     }
 
-    public Grupo(String id, String nome, String descricao, DocumentReference administrador, DocumentReference localizacao, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
+    public Grupo(String id, String nome, String descricao, DocumentReference administrador, List<DocumentReference> participantes, List<DocumentReference> atividades, String esporte) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.administrador = administrador;
-        this.localizacao = localizacao;
         this.participantes = participantes;
         this.atividades = atividades;
         this.esporte = esporte;
@@ -111,14 +105,6 @@ public class Grupo {
 
     public void setAdministrador(DocumentReference administrador) {
         this.administrador = administrador;
-    }
-
-    public DocumentReference getLocalizacao() {
-        return localizacao;
-    }
-
-    public void setLocalizacao(DocumentReference localizacao) {
-        this.localizacao = localizacao;
     }
 
     public List<DocumentReference> getParticipantes() {

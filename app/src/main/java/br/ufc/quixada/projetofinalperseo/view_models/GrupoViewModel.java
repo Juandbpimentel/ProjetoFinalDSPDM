@@ -24,11 +24,7 @@ public class GrupoViewModel extends BaseObservable {
 
     public GrupoViewModel(String id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-        db.collection("grupos").document(id).addSnapshotListener((snapshot, e) -> {
-            if (e != null){
-                Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
-                return;
-            }
+        db.collection("grupos").document(id).get().addOnSuccessListener(snapshot -> {
             if (snapshot == null || !snapshot.exists()) {
                 Log.d("Projeto Mobile - Carregando Grupo View Model", "Não existe grupo com id: " + id);
                 return;
@@ -42,6 +38,8 @@ public class GrupoViewModel extends BaseObservable {
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
             notifyPropertyChanged(BR.nome);
             notifyPropertyChanged(BR.email);
+        }).addOnFailureListener(e -> {
+            Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
         });
     }
 

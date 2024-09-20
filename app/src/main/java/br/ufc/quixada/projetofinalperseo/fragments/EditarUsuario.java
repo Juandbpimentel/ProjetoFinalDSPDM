@@ -60,29 +60,29 @@ public class EditarUsuario extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        MainActivity mainActivity = (MainActivity) requireActivity();
-        View view = inflater.inflate(R.layout.fragment_editar_usuario, container, false);
-
-
-        UsuarioViewModel usuarioViewModel = mainActivity.usuarioViewModel;
-        FragmentEditarUsuarioBinding binding = FragmentEditarUsuarioBinding.bind(view);
-        binding.setEditarUsuarioViewModel(usuarioViewModel);
-        Usuario usuario = usuarioViewModel.getUsuario();
-
-        EditText senha = view.findViewById(R.id.editar_usuario_campo_senha);
-        EditText nome = view.findViewById(R.id.editar_usuario_campo_nome);
-
-        Button btnSalvar = view.findViewById(R.id.editar_usuario_botao_salvar);
-        btnSalvar.setOnClickListener((v) -> {
-            Log.d("EditarUsuario", "Email: " + usuarioViewModel.getUsuario().getEmail());
-            String senhaString = senha.getText().toString();
-            String nomeString = nome.getText().toString();
-            usuarioViewModel.setNome(nomeString);
-            usuarioViewModel.atualizarUsuario(idUsuario, senhaString, mainActivity);
-            Fragment fragment = PerfilUsuario.newInstance(idUsuario);
-            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
-        });
+//        // Inflate the layout for this fragment
+//        MainActivity mainActivity = (MainActivity) requireActivity();
+       View view = inflater.inflate(R.layout.fragment_editar_usuario, container, false);
+//
+//
+//        UsuarioViewModel usuarioViewModel = mainActivity.usuarioViewModel;
+//        FragmentEditarUsuarioBinding binding = FragmentEditarUsuarioBinding.bind(view);
+//        binding.setEditarUsuarioViewModel(usuarioViewModel);
+//        Usuario usuario = usuarioViewModel.getUsuario();
+//
+//        EditText senha = view.findViewById(R.id.editar_usuario_campo_senha);
+//        EditText nome = view.findViewById(R.id.editar_usuario_campo_nome);
+//
+//        Button btnSalvar = view.findViewById(R.id.editar_usuario_botao_salvar);
+//        btnSalvar.setOnClickListener((v) -> {
+//            Log.d("EditarUsuario", "Email: " + usuarioViewModel.getUsuario().getEmail());
+//            String senhaString = senha.getText().toString();
+//            String nomeString = nome.getText().toString();
+//            usuarioViewModel.setNome(nomeString);
+//            usuarioViewModel.atualizarUsuario(idUsuario, senhaString, mainActivity);
+//            Fragment fragment = PerfilUsuario.newInstance(idUsuario);
+//            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
+//        });
 
         return view;
     }

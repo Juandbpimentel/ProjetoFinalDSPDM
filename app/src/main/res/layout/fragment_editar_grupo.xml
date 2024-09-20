@@ -84,30 +84,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/editar_grupo_label_descricao" />
 
             <TextView
-                android:id="@+id/editar_grupo_label_local"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Local"
-                android:textColor="#cc4725"
-                android:textSize="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editar_grupo_descricao" />
-
-            <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView3"
-                android:layout_width="331dp"
-                android:layout_height="155dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editar_grupo_label_local" />
-
-            <TextView
                 android:id="@+id/editar_grupo_label_esporte"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -118,7 +94,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapView3" />
+                app:layout_constraintTop_toBottomOf="@+id/editar_grupo_descricao" />
 
             <EditText
                 android:id="@+id/editar_grupo_esporte"

@@ -117,9 +117,9 @@
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
+                android:text="@{grupoViewModel.administrador}"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:text="@{grupoViewModel.administrador}"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -150,33 +150,25 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/ver_grupo_button_ver_localizacao"
+                app:layout_constraintBottom_toTopOf="@+id/ver_grupo_editar_grupo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_label_atividades" />
-
-            <Button
-                android:id="@+id/ver_grupo_button_ver_localizacao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="404dp"
-                android:layout_marginEnd="50dp"
-                android:text="Ver Localização"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ver_grupo_label_atividades" />
 
             <Button
                 android:id="@+id/ver_grupo_botao_participacao_grupo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="50dp"
                 android:text="Participar do Grupo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ver_grupos_excluir_grupo"
-                app:layout_constraintTop_toTopOf="@+id/ver_grupos_excluir_grupo" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ver_grupos_excluir_grupo" />
 
             <Button
                 android:id="@+id/ver_grupo_cadastrar_atividade"
@@ -196,11 +188,13 @@
                 android:layout_width="141dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="50dp"
+                android:layout_marginTop="400dp"
+                android:layout_marginEnd="50dp"
                 android:text="Editar Grupo"
-                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_button_ver_localizacao"
-                app:layout_constraintHorizontal_bias="0.372"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/ver_grupo_button_ver_localizacao" />
+                app:layout_constraintTop_toBottomOf="@+id/ver_grupo_label_atividades" />
 
             <Button
                 android:id="@+id/ver_grupos_excluir_grupo"
@@ -208,8 +202,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="50dp"
                 android:text="Excluir Grupo"
-                app:layout_constraintEnd_toStartOf="@+id/ver_grupo_botao_participacao_grupo"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ver_grupo_cadastrar_atividade" />
