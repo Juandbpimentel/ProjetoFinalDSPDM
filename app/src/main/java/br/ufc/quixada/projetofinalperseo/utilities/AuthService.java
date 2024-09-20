@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AuthService {
     public static FirebaseUser usuario = null;
@@ -45,21 +45,25 @@ public class AuthService {
     }
 
     public static boolean alterarEmail(String email, Context context){
+        AtomicBoolean deuCerto = new AtomicBoolean(false);
         usuario.verifyBeforeUpdateEmail(email).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 usuario = fauth.getCurrentUser();
+                deuCerto.set(true);
             }else {
                 usuario = null;
                 Toast.makeText(context, "Erro ao atualizar email de usuário: "+task.getException(), Toast.LENGTH_SHORT).show();
                 Log.d("AuthService", "Erro ao atualizar email de usuário: \""+email+"\" | " +task.getException());
+                deuCerto.set(false);
             }
         });
-        return usuario != null;
+        return deuCerto.get();
     }
 
     public static boolean alterarSenha(String senha, Context context){
         usuario.updatePassword(senha).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
+                Log.d("AuthService", "Senha atualizada com sucesso");
                 usuario = fauth.getCurrentUser();
             }else {
                 usuario = null;

@@ -10,9 +10,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -28,14 +26,15 @@ public class UsuarioViewModel extends BaseObservable {
 
     public UsuarioViewModel(String id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-        final DocumentReference docRef = db.collection("usuarios").document(id);
-        Task<DocumentSnapshot> task = docRef.get();
-        task.addOnSuccessListener((resultado) -> {
-                if (!resultado.exists()) {
+        db.collection("usuarios").document(id).addSnapshotListener((snapshot, e) -> {
+                if (e != null){
+                    Log.d("Projeto Mobile - Carregando View Model", "Erro ao carregar usuario com id: " + id + " - " + e.getLocalizedMessage());
+                }
+                if (snapshot == null || !snapshot.exists()) {
                     Log.d("Projeto Mobile - Carregando View Model", "Não existe usuario com id: " + id);
                     return;
                 }
-                Usuario usuario = resultado.toObject(Usuario.class);
+                Usuario usuario = snapshot.toObject(Usuario.class);
                 if (usuario == null) {
                     Log.d("Projeto Mobile - Carregando View Model", "Usuario nulo");
                     return;
@@ -45,9 +44,6 @@ public class UsuarioViewModel extends BaseObservable {
                 notifyPropertyChanged(BR.nome);
                 notifyPropertyChanged(BR.email);
 
-        });
-        task.addOnFailureListener((e) -> {
-            Log.d("Projeto Mobile - Carregando View Model", "Erro ao carregar usuario com id: " + id + " - " + e.getLocalizedMessage());
         });
     }
 
@@ -119,15 +115,16 @@ public class UsuarioViewModel extends BaseObservable {
     public void atualizarUsuario( String idUsuarioAntigo, String senha, Context context){
         if (idUsuarioAntigo == null) return;
         Log.d("Projeto Atualizando Usuario", "Usuario novo: " + usuario.toString());
-        if (senha != null)
-            Log.d("Projeto Atualizando Usuario", "Senha: " + senha);
-        String email = usuario.getEmail();
+
         String nome = usuario.getNome();
-        Log.d("Projeto Atualizando Usuario", "Email: " + email);
-        atualizarNome(nome, idUsuarioAntigo);
-        atualizarEmail(email, idUsuarioAntigo, context);
-        atualizarSenha(senha, context);
-        atualizarId(usuario.getId(), idUsuarioAntigo);
+        if (nome != null)
+            atualizarNome(nome, idUsuarioAntigo);
+        if (senha != null) {
+            Log.d("Projeto Atualizando Usuario", "Senha: " + senha);
+            atualizarSenha(senha, context);
+        }
+        if (usuario.getId() != null)
+            atualizarId(usuario.getId(), idUsuarioAntigo);
     }
 
     public void atualizarNome(String nome, String id){
@@ -144,43 +141,43 @@ public class UsuarioViewModel extends BaseObservable {
         usuario.setNome(nome);
     }
 
-    public void atualizarEmail(String email, String id, Context context){
-        DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id);
-        Log.d("Projeto Atualizando Email", "Email: " + email + " | Id: " + id);
-
-        usuarioRef.get().addOnSuccessListener(
-            documentSnapshot -> {
-                Usuario usuarioAntigo = documentSnapshot.toObject(Usuario.class);
-                if(usuarioAntigo == null) {
-                    Log.d("Atualizando Email", "Usuario antigo nulo");
-                    return;
-                }
-                if (email == null || usuarioAntigo.getEmail() == null) {
-                    Log.d("Atualizando Email", email == null ? "Email nulo" : "Email antigo nulo");
-                    if (usuarioAntigo.getEmail() != null)
-                        setEmail(usuarioAntigo.getEmail());
-                    return;
-                }
-                if (email.equals(usuarioAntigo.getEmail())) {
-                    Log.d("Atualizando Email", "Email igual ao antigo: "+ email);
-                    return;
-                }
-                Log.d("Projeto Atualizando Email", "Email antigo: " + usuarioAntigo.getEmail() + " | Email novo: " + email);
-                boolean deuCerto = AuthService.alterarEmail(email, context);
-                if (deuCerto) {
-                    Log.d("Projeto Atualizando Email", "Email alterado com sucesso");
-                    usuarioRef.update("email", email);
-                    usuario.setEmail(email);
-                    return;
-                }
-                Log.d("Projeto Atualizando Email", "Email não alterado");
-                usuario.setEmail(usuarioAntigo.getEmail());
-            }
-        ).addOnFailureListener(e -> {
-            Log.d("Atualizando Email", "Erro ao buscar usuario antigo: " + e.getLocalizedMessage());
-        });
-
-    }
+//    public void atualizarEmail(String email, String id, Context context){
+//        DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(id);
+//        Log.d("Projeto Atualizando Email", "Email: " + email + " | Id: " + id);
+//
+//        usuarioRef.get().addOnSuccessListener(
+//            documentSnapshot -> {
+//                Usuario usuarioAntigo = documentSnapshot.toObject(Usuario.class);
+//                if(usuarioAntigo == null) {
+//                    Log.d("Atualizando Email", "Usuario antigo nulo");
+//                    return;
+//                }
+//                if (email == null || usuarioAntigo.getEmail() == null) {
+//                    Log.d("Atualizando Email", email == null ? "Email nulo" : "Email antigo nulo");
+//                    if (usuarioAntigo.getEmail() != null)
+//                        setEmail(usuarioAntigo.getEmail());
+//                    return;
+//                }
+//                if (email.equals(usuarioAntigo.getEmail())) {
+//                    Log.d("Atualizando Email", "Email igual ao antigo: "+ email);
+//                    return;
+//                }
+//                Log.d("Projeto Atualizando Email", "Email antigo: " + usuarioAntigo.getEmail() + " | Email novo: " + email);
+//                boolean deuCerto = AuthService.alterarEmail(email, context);
+//                if (deuCerto) {
+//                    Log.d("Projeto Atualizando Email", "Email alterado com sucesso");
+//                    usuarioRef.update("email", email);
+//                    usuario.setEmail(email);
+//                    return;
+//                }
+//                Log.d("Projeto Atualizando Email", "Email não alterado");
+//                usuario.setEmail(usuarioAntigo.getEmail());
+//            }
+//        ).addOnFailureListener(e -> {
+//            Log.d("Atualizando Email", "Erro ao buscar usuario antigo: " + e.getLocalizedMessage());
+//        });
+//
+//    }
 
     public void atualizarId(String id, String idAntigo){
         DocumentReference usuarioRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("usuarios").document(idAntigo);
@@ -202,7 +199,8 @@ public class UsuarioViewModel extends BaseObservable {
     }
 
     public void atualizarSenha(String senha, Context context){
-        if (senha == null || senha.isEmpty()) return;
+        if (senha == null || senha.isEmpty())
+            return;
         AuthService.alterarSenha(senha, context);
     }
 
