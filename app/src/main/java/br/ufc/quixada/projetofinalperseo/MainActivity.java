@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import br.ufc.quixada.projetofinalperseo.fragments.PerfilUsuario;
 import br.ufc.quixada.projetofinalperseo.fragments.TelaInicial;
 import br.ufc.quixada.projetofinalperseo.fragments.TelaLogin;
+import br.ufc.quixada.projetofinalperseo.fragments.VerGrupos;
 import br.ufc.quixada.projetofinalperseo.utilities.AuthService;
 import br.ufc.quixada.projetofinalperseo.view_models.UsuarioViewModel;
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = new TelaInicial();
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
             } else if (position == R.id.grupos_navbar) {
-                Fragment fragment = new TelaInicial();
+                Fragment fragment = new VerGrupos();
                 getSupportFragmentManager().beginTransaction().replace(R.id.main_frame_layout, fragment).commit();
 
             } else if (position == R.id.perfil_navbar) {
