@@ -100,7 +100,8 @@ public class CriarAtividade extends Fragment {
             localizacaoAtual.setCidade("cidade");
             localizacaoAtual.setEstado("estado");
             localizacaoAtual.setPais("pais");
-            localizacaoAtual.setGeoPoint(new GeoPoint(gpsTracker.getLatitude(), gpsTracker.getLongitude()));
+            Location location = new Location("gps");
+            localizacaoAtual.setGeoPoint(new GeoPoint(location.getLatitude(), location.getLongitude()));
         } else {
             Toast.makeText(getContext(), "Permissão de localização não concedida", Toast.LENGTH_SHORT).show();
             return;
@@ -125,6 +126,9 @@ public class CriarAtividade extends Fragment {
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "Erro ao criar atividade: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+        db.collection("localizacoes").document(localizacaoAtual.getId()).set(localizacaoAtual);
+        grupoAtual.getAtividades().add(db.collection("atividades").document(atividade.getId()));
+        db.collection("grupos").document(grupoAtual.getId()).set(grupoAtual);
     }
 
     private void getGrupoAtual() {

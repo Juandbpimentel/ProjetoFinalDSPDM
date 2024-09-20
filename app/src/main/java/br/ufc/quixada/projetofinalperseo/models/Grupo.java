@@ -22,8 +22,8 @@ public class Grupo {
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", administrador=" + administrador +
-                ", participantes=[" + participantes.stream().map(DocumentReference::getId).collect(Collectors.joining(", ")) +
-                "], atividades=" + atividades.stream().map(DocumentReference::getId).collect(Collectors.joining(", ")) +
+                ", participantes=[" + "aaaaaa" +
+                "], atividades=" + "aaaaaaa" +
                 ", esporte='" + esporte + '\'' +
                 '}';
     }
