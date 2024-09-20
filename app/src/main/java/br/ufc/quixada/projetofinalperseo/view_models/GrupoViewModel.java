@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -23,8 +24,12 @@ public class GrupoViewModel extends BaseObservable {
     private Grupo grupo;
 
     public GrupoViewModel(String id) {
+        Log.d("Doideira mano Projeto Mobile - Grupo View Model", "Carregando grupo com id: " + id);
         FirebaseFirestore db = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo");
-        db.collection("grupos").document(id).get().addOnSuccessListener(snapshot -> {
+        DocumentReference docRef = db.collection("grupos").document(id);
+        Log.d("Doideira mano Pgggggggrojeto Mobile 2", "Sucesso ao carregar grupo com id: " + id);
+        docRef.get().addOnSuccessListener(snapshot -> {
+            Log.d("Doideira mano Projeto Mobile 2", "Sucesso ao carregar grupo com id: " + id);
             if (snapshot == null || !snapshot.exists()) {
                 Log.d("Projeto Mobile - Carregando Grupo View Model", "Não existe grupo com id: " + id);
                 return;
@@ -37,12 +42,11 @@ public class GrupoViewModel extends BaseObservable {
             setGrupo(grupo);
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Carregado grupo com id: " + id + " - " + grupo);
             notifyPropertyChanged(BR.nome);
-            notifyPropertyChanged(BR.esporte);
-            notifyPropertyChanged(BR.descricao);
-            notifyPropertyChanged(BR.administrador);
         }).addOnFailureListener(e -> {
+            Log.d("Doideira mano Projeto Mobile 3", "Sucesso ao carregar grupo com id: " + id);
             Log.d("Projeto Mobile - Carregando Grupo View Model", "Erro ao carregar grupo com id: " + id + " - " + e.getLocalizedMessage());
         });
+        Log.d("Doideira mano Pgggggggrojeto Mobile 2", "Sucesso ao carregar grupo com id: " + id);
     }
 
     public GrupoViewModel() { this.grupo = new Grupo(); }
@@ -50,8 +54,9 @@ public class GrupoViewModel extends BaseObservable {
     public GrupoViewModel(Grupo grupo) { this.grupo = grupo; }
 
     public List<Atividade> getAtividades(){
-        CollectionReference atividadesRef = FirebaseFirestore.getInstance("db-firestore-projeto-mobile-perseo").collection("atividades");
+        CollectionReference atividadesRef = FirebaseFirestore.getInstance().collection("atividades");
         AtomicReference<List<Atividade>> atividades = new AtomicReference<>();
+        Log.d("Projeto Mobile - Grupo View Model", "Carregando atividades do grupo com id: " + grupo.getId());
         if (grupo.getAtividades() == null) return List.of();
         grupo.getAtividades().forEach(documentReference -> {
             atividadesRef.document(documentReference.getId()).get().addOnSuccessListener(documentSnapshot -> {
@@ -63,7 +68,6 @@ public class GrupoViewModel extends BaseObservable {
                 return;
             });
         });
-        if (atividades.get() == null) return List.of();
         return atividades.get();
     }
 
@@ -153,7 +157,7 @@ public class GrupoViewModel extends BaseObservable {
 
     @Bindable
     public String getAdministrador(){
-        if (grupo == null) return "Grupo não encontrado";
+        if (grupo == null || grupo.getAdministrador() == null) return "Grupo não encontrado";
         AtomicReference<DocumentSnapshot> administrador = new AtomicReference<>();
         grupo.getAdministrador().get().addOnSuccessListener(administrador::set);
         if (administrador.get() == null) return "Grupo não encontrado";
